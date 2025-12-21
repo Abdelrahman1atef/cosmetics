@@ -1,24 +1,23 @@
-import 'package:cosmetics/views/main/views/cart.dart';
-import 'package:cosmetics/views/main/views/categories.dart';
-import 'package:cosmetics/views/main/views/home.dart';
-import 'package:cosmetics/views/main/views/profile.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cosmetics/views/home/pages/cart.dart';
+import 'package:cosmetics/views/home/pages/categories.dart';
+import 'package:cosmetics/views/home/pages/home.dart';
+import 'package:cosmetics/views/home/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class MainView extends StatefulWidget {
+  const MainView({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<MainView> createState() => _MainViewState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainViewState extends State<MainView> {
   List<Widget> screens = [
-    const HomeScreen(),
-    const CategoriesScreen(),
-    const CartScreen(),
-    const ProfileScreen(),
+    const HomePage(),
+    const CategoriesPage(),
+    const CartPage(),
+    const ProfilePage(),
   ];
   int currentScreen = 0;
 

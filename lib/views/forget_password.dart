@@ -6,8 +6,8 @@ import '../core/widgets/custom_button.dart';
 import '../core/widgets/custom_dropdownmenu.dart';
 import '../core/widgets/custom_textformfield.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
-  const ForgetPasswordScreen({super.key});
+class ForgetPasswordPage extends StatelessWidget {
+  const ForgetPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        const VerifyCodeScreen(isRegister: false),
+                        const VerifyCodePage(isRegister: false),
                   ),
                 );
               },

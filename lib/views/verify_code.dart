@@ -1,7 +1,7 @@
 // ignore_for_file: inference_failure_on_instance_creation
 
 import 'package:cosmetics/core/widgets/custom_button.dart';
-import 'package:cosmetics/views/main/main.dart';
+import 'package:cosmetics/views/home/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,8 +10,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 import 'login.dart';
 
-class VerifyCodeScreen extends StatelessWidget {
-  const VerifyCodeScreen({super.key, required this.isRegister});
+class VerifyCodePage extends StatelessWidget {
+  const VerifyCodePage({super.key, required this.isRegister});
 
   final bool isRegister;
 
@@ -183,8 +183,8 @@ class VerifyCodeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => isRegister
-                                    ? const MainScreen()
-                                    : const LoginScreen(),
+                                    ? const MainView()
+                                    : const LoginPage(),
                               ),
                               (route) => false,
                             );

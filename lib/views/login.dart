@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../core/widgets/custom_textformfield.dart';
-import 'main/main.dart';
+import 'home/view.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ForgetPasswordScreen(),
+                      builder: (context) => const ForgetPasswordPage(),
                     ),
                   ),
                   child: Text(
@@ -88,7 +88,7 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainScreen()),
+                  MaterialPageRoute(builder: (context) => const MainView()),
                 );
               },
               child: Text("Login", style: TextTheme.of(context).bodyMedium),
@@ -101,7 +101,7 @@ class LoginScreen extends StatelessWidget {
         child: GestureDetector(
           onTap: () => Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const RegisterScreen()),
+            MaterialPageRoute(builder: (context) => const RegisterPage()),
           ),
           child: RichText(
             textAlign: TextAlign.center,

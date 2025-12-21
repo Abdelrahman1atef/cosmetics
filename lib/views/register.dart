@@ -9,8 +9,8 @@ import '../core/widgets/custom_button.dart';
 import '../core/widgets/custom_dropdownmenu.dart';
 import '../core/widgets/custom_textformfield.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class RegisterScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const VerifyCodeScreen(isRegister: true,),
+                    builder: (context) => const VerifyCodePage(isRegister: true,),
                   ),
                 );
               },
@@ -86,7 +86,7 @@ class RegisterScreen extends StatelessWidget {
         child: GestureDetector(
           onTap: () => Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()),
+            MaterialPageRoute(builder: (context) => const LoginPage()),
           ),
           child: RichText(
             textAlign: TextAlign.center,

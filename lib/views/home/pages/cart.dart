@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 
 import '../../../core/widgets/app_bar.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+class CartPage extends StatelessWidget {
+  const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {

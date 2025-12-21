@@ -3,22 +3,22 @@ import 'package:gap/gap.dart';
 
 import '../../../core/widgets/app_bar.dart';
 
-class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBar(
-        haveSearchBar: true,
+        haveSearchBar: false,
         haveTitle: true,
-        title: "Categories",
+        title: "My Cart",
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Gap(50),
+            Gap(50),
             Padding(
               padding: const EdgeInsetsGeometry.all(13),
               child: Stack(

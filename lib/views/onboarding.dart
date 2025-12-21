@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 
-class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+class OnboardingPage extends StatefulWidget {
+  const OnboardingPage({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _SplashScreenState();
+  State<OnboardingPage> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<OnboardingScreen> {
+class _SplashScreenState extends State<OnboardingPage> {
   PageController pageController = PageController(initialPage: 0);
   int currentPage = 0;
 
@@ -71,7 +71,7 @@ class _SplashScreenState extends State<OnboardingScreen> {
                               : Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
+                                    builder: (context) => const LoginPage(),
                                   ),
                                 );
                         });

@@ -5,8 +5,8 @@ import 'package:gap/gap.dart';
 import '../../../core/widgets/app_bar.dart';
 import '../../../core/widgets/card.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Gap(50),
+              const Gap(20),
               Stack(
                 alignment: AlignmentGeometry.center,
                 children: [
@@ -77,7 +77,6 @@ class HomeScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.displayLarge,
               ),
               const Gap(30),
-
               ///todo handel data that come from api
               GridView(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -87,9 +86,9 @@ class HomeScreen extends StatelessWidget {
                   childAspectRatio: 0.7
                 ),
                 scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                children: [
+                children: const [
                   CustomCard(image: "assets/images/image1.jpg"),
                   CustomCard(image: "assets/images/image2.jpg"),
                   CustomCard(image: "assets/images/image3.jpg"),
@@ -100,6 +99,24 @@ class HomeScreen extends StatelessWidget {
               Text(
                 "Most ordered Products",
                 style: Theme.of(context).textTheme.displayLarge,
+              ),
+              ///todo handel data that come from api
+              GridView(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 0.7
+                ),
+                scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                children: const [
+                  CustomCard(image: "assets/images/image1.jpg"),
+                  CustomCard(image: "assets/images/image2.jpg"),
+                  CustomCard(image: "assets/images/image3.jpg"),
+                  CustomCard(image: "assets/images/image4.jpg"),
+                ],
               ),
             ],
           ),
