@@ -13,12 +13,10 @@ class AvonApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MainView(),
-      color: const Color(0xFFD9D9D9),
+      home: const MainView (),
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: "Montserrat",
-
         textTheme: const TextTheme(
           titleLarge: TextStyle(
             fontFamily: 'Montserrat',
@@ -32,11 +30,17 @@ class AvonApp extends StatelessWidget {
             color: Color(0xFF8E8EA9),
             fontVariations: <FontVariation>[FontVariation('wght', 400)],
           ),
+          titleSmall: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: 15,
+            color: Color(0xFF8E8EA9),
+            fontVariations: <FontVariation>[FontVariation('wght', 500)],
+          ),
           headlineMedium: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 18,
             fontVariations: <FontVariation>[FontVariation('wght', 700)],
-            color: Color(0xFF62322D),
+            color:  Color(0xFF62322D),
           ),
           displayLarge: TextStyle(
             fontFamily: 'Montserrat',
@@ -68,15 +72,33 @@ class AvonApp extends StatelessWidget {
         scaffoldBackgroundColor:const Color(0xFFD9D9D9),
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xFFD9D9D9),
-          onPrimary: Color(0xFFD9D9D9),
+          primary: Color(0xFFD75D72),
+          onPrimary: Color(0xFFD75D72),
           secondary: Color(0xFF434C6D),
           onSecondary: Color(0xFF434C6D),
-          error: Color(0xFFD75D72),
-          onError: Color(0xFFD75D72),
+          error: Color(0xFFCD0F0F),
+          onError: Color(0xFFCD0F0F),
           surface: Color(0xFFB3B3C1),
           onSurface: Color(0xFFB3B3C1),
         ),
+        searchBarTheme: const SearchBarThemeData(
+          elevation: WidgetStatePropertyAll(0),
+          padding: WidgetStatePropertyAll(
+            EdgeInsetsDirectional.symmetric(
+              horizontal: 15,
+              vertical: 5,
+            ),
+          ),
+          side: WidgetStatePropertyAll(
+            BorderSide(
+              color: Color(0xFFB3B3C1),
+              width: 1,
+            ),
+          ),
+          backgroundColor: WidgetStatePropertyAll(
+            Color(0xFFD9D9D9),
+          ),
+        )
       ),
     );
   }

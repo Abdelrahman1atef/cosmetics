@@ -1,3 +1,5 @@
+import 'package:cosmetics/core/widgets/app_Image.dart';
+import 'package:cosmetics/views/home/check_out.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -14,31 +16,47 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(kToolbarHeight + (haveTitle ? 70 : 25));
+  Size get preferredSize => Size.fromHeight(
+    kToolbarHeight + (haveSearchBar && haveTitle ? kToolbarHeight : 25),
+  );
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       elevation: 0,
-      actionsIconTheme: const IconThemeData(color: Colors.black),
+      scrolledUnderElevation: 0,
+      automaticallyImplyLeading: false,
+      leadingWidth: 50,
+      leading: Navigator.canPop(context)
+          ? Padding(
+            padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
+            child: CircleAvatar(
+            maxRadius: 20,
+            backgroundColor: Theme.of(context).hintColor.withValues(
+              alpha: 0.3
+            ),
+            child: AppImage(image: "arrow_back.svg")),
+          )
+          : null,
       centerTitle: true,
       title: haveTitle
           ? Text(
               title ?? "",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontSize:30
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontSize: 30),
             )
           : null,
-      actionsPadding: EdgeInsetsDirectional.symmetric(horizontal: 24),
+      actionsPadding: const EdgeInsetsDirectional.symmetric(horizontal: 24),
       actions: haveAction ?? false
           ? [
-              Icon(
-                Icons.add_shopping_cart_rounded,
-                color: Theme.of(context).colorScheme.error,
-                size: 30,
+              InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CheckOutView()),
+                ),
+                child: AppImage(image: "check_out.svg", width: 30),
               ),
             ]
           : null,
@@ -47,27 +65,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               preferredSize: preferredSize,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SearchBar(
-                  elevation: const WidgetStatePropertyAll(0),
-                  padding: const WidgetStatePropertyAll(
-                    EdgeInsetsDirectional.symmetric(
-                      horizontal: 15,
-                      vertical: 5,
+                child: SearchBarTheme(
+                  data: Theme.of(context).searchBarTheme,
+                  child: SearchBar(
+                    hintText: "Search",
+                    hintStyle: WidgetStatePropertyAll(
+                      Theme.of(context).textTheme.titleSmall,
                     ),
-                  ),
-                  hintText: "Search",
-                  hintStyle: WidgetStatePropertyAll(
-                    Theme.of(context).textTheme.titleMedium,
-                  ),
-                  trailing: const [Icon(Icons.search)],
-                  side: WidgetStatePropertyAll(
-                    BorderSide(
-                      color: Theme.of(context).colorScheme.surface,
-                      width: 1,
+                    trailing: const [AppImage(image: "search.svg")],
+                    textStyle: WidgetStatePropertyAll(
+                      Theme.of(context).textTheme.displayMedium,
                     ),
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(
-                    Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),

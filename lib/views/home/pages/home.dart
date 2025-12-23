@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
 
+import '../../../core/widgets/app_Image.dart';
 import '../../../core/widgets/app_bar.dart';
 import '../../../core/widgets/card.dart';
 
@@ -19,12 +19,12 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Gap(20),
+              const SizedBox(height:20),
               Stack(
                 alignment: AlignmentGeometry.center,
                 children: [
                   ///Todo change to network image
-                  Image.asset("assets/images/temp_home_image_ad.png"),
+                  const AppImage(image:"temp_home_image_ad.png"),
                   Container(
                     height: 170,
                     decoration: BoxDecoration(
@@ -47,19 +47,19 @@ class HomePage extends StatelessWidget {
                                   context,
                                 ).textTheme.headlineMedium,
                               ),
-                              SvgPicture.asset("assets/svgs/offer.svg"),
+                              AppImage(image: "offer.svg"),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SvgPicture.asset("assets/svgs/offer.svg"),
+                              AppImage(image:"offer.svg"),
                               Text(
                                 "Hurry up! \nSkin care only !",
                                 style: Theme.of(context).textTheme.displayMedium
                                     ?.copyWith(
                                       fontVariations: <FontVariation>[
-                                        FontVariation('wght', 700),
+                                        const FontVariation('wght', 700),
                                       ],
                                     ),
                               ),
@@ -71,12 +71,12 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const Gap(30),
+              const SizedBox(height:30),
               Text(
                 "Top rated products",
                 style: Theme.of(context).textTheme.displayLarge,
               ),
-              const Gap(30),
+              const SizedBox(height:30),
               ///todo handel data that come from api
               GridView(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -89,17 +89,18 @@ class HomePage extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 children: const [
-                  CustomCard(image: "assets/images/image1.jpg"),
-                  CustomCard(image: "assets/images/image2.jpg"),
-                  CustomCard(image: "assets/images/image3.jpg"),
-                  CustomCard(image: "assets/images/image4.jpg"),
+                  CustomCard(image: "image1.jpg"),
+                  CustomCard(image: "image2.jpg"),
+                  CustomCard(image: "image3.jpg"),
+                  CustomCard(image: "image4.jpg"),
                 ],
               ),
-              const Gap(30),
+              const SizedBox(height:30),
               Text(
                 "Most ordered Products",
                 style: Theme.of(context).textTheme.displayLarge,
               ),
+              const SizedBox(height:30),
               ///todo handel data that come from api
               GridView(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -112,10 +113,10 @@ class HomePage extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 children: const [
-                  CustomCard(image: "assets/images/image1.jpg"),
-                  CustomCard(image: "assets/images/image2.jpg"),
-                  CustomCard(image: "assets/images/image3.jpg"),
-                  CustomCard(image: "assets/images/image4.jpg"),
+                  CustomCard(image: "image5.png"),
+                  CustomCard(image: "image6.png"),
+                  CustomCard(image: "image7.png"),
+                  CustomCard(image: "image8.png"),
                 ],
               ),
             ],

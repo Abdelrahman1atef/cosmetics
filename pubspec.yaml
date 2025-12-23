@@ -34,7 +34,6 @@ dependencies:
   json_annotation:
   freezed_annotation:
   flutter_bloc:
-  gap:
   flutter_svg:
   flutter_screenutil:
   pin_code_fields:
@@ -54,9 +53,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/on_boarding/
     - assets/images/
-    - assets/svgs/
+    - assets/icons/
   fonts:
     - family: Segoe
       fonts:

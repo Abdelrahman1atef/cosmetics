@@ -5,8 +5,7 @@ import 'package:cosmetics/core/widgets/custom_dropdownmenu.dart';
 import 'package:cosmetics/views/forget_password.dart';
 import 'package:cosmetics/views/register.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-
+import '../core/widgets/app_Image.dart';
 import '../core/widgets/custom_textformfield.dart';
 import 'home/view.dart';
 
@@ -16,7 +15,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorScheme.of(context).primary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsetsGeometry.directional(
           top: kToolbarHeight + 50,
@@ -30,15 +29,15 @@ class LoginPage extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsetsGeometry.directional(end: 20),
-              child: Image.asset("assets/images/login_img.png", width: 380),
+              child: const AppImage(image:"login_img.png", width: 380),
             ),
             Text("Login Now", style: TextTheme.of(context).titleLarge),
-            const Gap(14),
+            const SizedBox(height:14),
             Text(
               "Please enter the details below to continue",
               style: TextTheme.of(context).titleMedium,
             ),
-            const Gap(25),
+            const SizedBox(height:25),
             const Form(
               child: Column(
                 children: [
@@ -47,21 +46,21 @@ class LoginPage extends StatelessWidget {
                       ///Todo style dropdown menu
                       ///Todo add validator
                       CustomDropdownMenu(),
-                      Gap(6),
+                      SizedBox(width:6),
                       Expanded(
                         ///Todo add validator
                         child: CustomTextFormField(labelText: "Phone Number"),
                       ),
                     ],
                   ),
-                  Gap(16),
+                  SizedBox(height:16),
 
                   ///Todo add validator
                   CustomTextFormField(labelText: "Your Password"),
                 ],
               ),
             ),
-            const Gap(20),
+            const SizedBox(height:20),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -80,7 +79,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ],
             ),
-            const Gap(40),
+            const SizedBox(height:40),
             CustomButton(
               isChildIcon: false,
 

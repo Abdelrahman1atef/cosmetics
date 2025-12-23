@@ -3,8 +3,7 @@
 import 'package:cosmetics/views/login.dart';
 import 'package:cosmetics/views/verify_code.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
+import '../core/widgets/app_Image.dart';
 import '../core/widgets/custom_button.dart';
 import '../core/widgets/custom_dropdownmenu.dart';
 import '../core/widgets/custom_textformfield.dart';
@@ -15,7 +14,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorScheme.of(context).primary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsetsGeometry.directional(
           top: kToolbarHeight + 50,
@@ -27,35 +26,35 @@ class RegisterPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset("assets/svgs/app_icon.svg", width: 100),
-            const Gap(40),
+            const AppImage(image:"app_icon.svg", width: 100),
+            const SizedBox(height:40),
             Text("Create Account", style: TextTheme.of(context).titleLarge),
-            const Gap(80),
+            const SizedBox(height:80),
             const Form(
               child: Column(
                 children: [
                   CustomTextFormField(labelText: "Your Name"),
-                  Gap(16),
+                  SizedBox(height:16),
                   Row(
                     children: [
                       ///Todo style dropdown menu
                       ///Todo add validator
                       CustomDropdownMenu(),
-                      Gap(6),
+                      SizedBox(width:6),
                       Expanded(
                         ///Todo add validator
                         child: CustomTextFormField(labelText: "Phone Number"),
                       ),
                     ],
                   ),
-                  Gap(16),
+                  SizedBox(height:16),
 
                   ///Todo add validator
                   CustomTextFormField(
                     labelText: "Create your password",
                     isPasswordField: true,
                   ),
-                  Gap(16),
+                  SizedBox(height:16),
                   CustomTextFormField(
                     labelText: "Confirm password",
                     isPasswordField: true,
@@ -63,7 +62,7 @@ class RegisterPage extends StatelessWidget {
                 ],
               ),
             ),
-            const Gap(80),
+            const SizedBox(height:80),
             CustomButton(
               isChildIcon: false,
 

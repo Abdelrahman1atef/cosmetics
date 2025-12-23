@@ -1,9 +1,10 @@
-import 'package:cosmetics/views/home/pages/cart.dart';
+import 'package:cosmetics/views/home/pages/cart/cart.dart';
 import 'package:cosmetics/views/home/pages/categories.dart';
 import 'package:cosmetics/views/home/pages/home.dart';
 import 'package:cosmetics/views/home/pages/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../core/widgets/app_Image.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -24,12 +25,11 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       body: IndexedStack(index: currentScreen, children: screens),
       bottomNavigationBar: Container(
         margin: const EdgeInsetsGeometry.directional(start: 13,end: 13,bottom: 15,top: 10),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadiusGeometry.circular(25),
           shape: BoxShape.rectangle,
           boxShadow: [
@@ -57,28 +57,28 @@ class _MainViewState extends State<MainView> {
                 currentScreen = value;
               });
             },
-            items: [
+            items: const [
               BottomNavigationBarItem(
-                icon: SvgPicture.asset("assets/svgs/unselected_home.svg",width: 30,),
-                activeIcon: SvgPicture.asset("assets/svgs/selected_home.svg",width: 30,),
+                icon: AppImage(image:"unselected_home.svg",width: 30,),
+                activeIcon: AppImage(image:"selected_home.svg",width: 30,),
                 tooltip: "Home",
                 label: "",
               ),
               BottomNavigationBarItem(
-                icon: SvgPicture.asset("assets/svgs/unselected_categories.svg",width: 30,),
-                activeIcon: SvgPicture.asset("assets/svgs/selected_categories.svg",width: 30,),
+                icon: AppImage(image:"unselected_categories.svg",width: 30,),
+                activeIcon: AppImage(image:"selected_categories.svg",width: 30,),
                 tooltip: "Categories",
                 label: "",
               ),
               BottomNavigationBarItem(
-                icon: SvgPicture.asset("assets/svgs/unselected_cart.svg",width: 30,),
-                activeIcon: SvgPicture.asset("assets/svgs/selected_cart.svg",width: 30,),
+                icon: AppImage(image:"unselected_cart.svg",width: 30,),
+                activeIcon: AppImage(image:"selected_cart.svg",width: 30,),
                 tooltip: "Cart",
                 label: "",
               ),
               BottomNavigationBarItem(
-                icon: SvgPicture.asset("assets/svgs/unselected_profile.svg",width: 30,),
-                activeIcon: SvgPicture.asset("assets/svgs/selected_profile.svg",width: 30,),
+                icon: AppImage(image:"unselected_profile.svg",width: 30,),
+                activeIcon: AppImage(image:"selected_profile.svg",width: 30,),
                 tooltip: "Profile",
                 label: "",
               ),

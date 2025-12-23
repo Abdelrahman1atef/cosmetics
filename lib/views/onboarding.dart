@@ -3,8 +3,8 @@
 import 'package:cosmetics/core/widgets/custom_button.dart';
 import 'package:cosmetics/views/login.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
+import '../core/widgets/app_Image.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -14,41 +14,73 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<OnboardingPage> {
-  PageController pageController = PageController(initialPage: 0);
+  final controller = PageController();
   int currentPage = 0;
 
   @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      setState(() {
+        currentPage = controller.page!.toInt();
+        print(currentPage);
+      });
+    });
+  }
+
+  @override
   void dispose() {
+    controller.dispose();
     super.dispose();
-    pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorScheme.of(context).primary,
-      body: PageView(
-        controller: pageController,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: PageView.builder(
+        controller: controller,
+        itemCount: pages.length,
         physics: const NeverScrollableScrollPhysics(),
-        children: pages
-            .map(
-              (screen) => Padding(
-                padding: const EdgeInsetsGeometry.symmetric(horizontal: 45),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        itemBuilder: (context, index) {
+          final page = pages[index];
+          return Padding(
+            padding: const EdgeInsetsGeometry.symmetric(horizontal: 45),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Image.asset(screen.image, height: 390),
-                    const Gap(30),
-                    Text(screen.text,style: TextTheme.of(context).titleLarge?.copyWith(
-                      fontFamily: 'Segoe_SemiBold',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                      color: ColorScheme.of(context).secondary,
-                    ),),
-                    const Gap(10),
+                    TextButton(
+                      onPressed: () => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
+                      ),
+                      child: currentPage == 2
+                          ?const SizedBox.shrink():Text(
+                        "Skip",
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    AppImage(image: page.image, height: 390),
+                    const SizedBox(height: 30),
                     Text(
-                      screen.subText,
+                      page.text,
+                      style: TextTheme.of(context).titleLarge?.copyWith(
+                        fontFamily: 'Segoe_SemiBold',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: ColorScheme.of(context).secondary,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      page.subText,
                       style: TextTheme.of(context).titleMedium?.copyWith(
                         fontFamily: 'Segoe',
                         fontSize: 18,
@@ -57,16 +89,14 @@ class _SplashScreenState extends State<OnboardingPage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const Gap(30),
+                    const SizedBox(height: 30),
                     CustomButton(
-                      isChildIcon: currentPage != 2 ? true : false,
+                      isChildIcon: currentPage != 2,
                       onPressed: () {
                         setState(() {
                           currentPage != 2
-                              ? pageController.animateToPage(
+                              ? controller.jumpToPage(
                                   ++currentPage,
-                                  duration: const Duration(milliseconds: 200),
-                                  curve: Curves.linear,
                                 )
                               : Navigator.pushReplacement(
                                   context,
@@ -76,14 +106,10 @@ class _SplashScreenState extends State<OnboardingPage> {
                                 );
                         });
                       },
-                      color: ColorScheme.of(context).secondary
-                      , width: 90,
+                      color: ColorScheme.of(context).secondary,
+                      width: 90,
                       child: currentPage != 2
-                          ? const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: Colors.white,
-                              size: 35,
-                            )
+                          ? const AppImage(image: "arrow.svg",width: 30,height: 30,)
                           : Text(
                               "let’s start!",
                               style: TextTheme.of(context).bodyMedium,
@@ -91,40 +117,41 @@ class _SplashScreenState extends State<OnboardingPage> {
                     ),
                   ],
                 ),
-              ),
-            )
-            .toList(),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  List<SplashScreensModel> pages = [
-    SplashScreensModel(
-      image: "assets/on_boarding/on_boarding1.png",
+  final pages = [
+    _SplashScreensModel(
+      image: "on_boarding1.png",
       text: "WELCOME!",
       subText:
           "Makeup has the power to transform your mood and empowers you to be a more confident person.",
     ),
-    SplashScreensModel(
-      image: "assets/on_boarding/on_boarding2.png",
+    _SplashScreensModel(
+      image: "on_boarding2.png",
       text: "SEARCH & PICK",
       subText:
           "We have dedicated set of products and routines hand picked for every skin type.",
     ),
-    SplashScreensModel(
-      image: "assets/on_boarding/on_boarding3.png",
+    _SplashScreensModel(
+      image: "on_boarding3.png",
       text: "PUCH NOTIFICATIONS ",
       subText: "Allow notifications for new makeup & cosmetics offers.",
     ),
   ];
 }
 
-class SplashScreensModel {
+class _SplashScreensModel {
   String image;
   String text;
   String subText;
 
-  SplashScreensModel({
+  _SplashScreensModel({
     required this.image,
     required this.text,
     required this.subText,

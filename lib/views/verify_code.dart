@@ -5,9 +5,9 @@ import 'package:cosmetics/views/home/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../core/widgets/app_Image.dart';
 import 'login.dart';
 
 class VerifyCodePage extends StatelessWidget {
@@ -18,7 +18,7 @@ class VerifyCodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorScheme.of(context).primary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsetsGeometry.directional(
           top: kToolbarHeight + 50,
@@ -31,10 +31,10 @@ class VerifyCodePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset("assets/svgs/app_icon.svg", width: 100),
-              const Gap(40),
+              const AppImage(image:"app_icon.svg", width: 100),
+              const SizedBox(height:40),
               Text("Verify Code", style: TextTheme.of(context).titleLarge),
-              const Gap(40),
+              const SizedBox(height:40),
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
@@ -54,7 +54,7 @@ class VerifyCodePage extends StatelessWidget {
                   ],
                 ),
               ),
-              const Gap(50),
+              const SizedBox(height:50),
               Row(
                 children: [
                   GestureDetector(
@@ -66,7 +66,7 @@ class VerifyCodePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const Gap(50),
+              const SizedBox(height:50),
               Padding(
                 padding: const EdgeInsetsGeometry.symmetric(horizontal: 60),
                 child: PinCodeTextField(
@@ -94,12 +94,12 @@ class VerifyCodePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     shape: PinCodeFieldShape.box,
                     inactiveColor: Theme.of(context).hintColor,
-                    selectedColor: Theme.of(context).colorScheme.error,
-                    activeColor: Theme.of(context).colorScheme.error,
+                    selectedColor: Theme.of(context).colorScheme.primary,
+                    activeColor: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
-              const Gap(50),
+              const SizedBox(height:50),
               ///todo add timer for resend code
               GestureDetector(
                 onTap: () {},
@@ -119,21 +119,21 @@ class VerifyCodePage extends StatelessWidget {
                         style: TextTheme.of(context).labelMedium?.copyWith(
                           color: Theme.of(
                             context,
-                          ).colorScheme.error.withValues(alpha: 0.7),
+                          ).colorScheme.primary.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const Gap(50),
+              const SizedBox(height:50),
 
               CustomButton(
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                       shape: RoundedSuperellipseBorder(
                         borderRadius: BorderRadiusGeometry.circular(30),
                       ),
@@ -144,17 +144,17 @@ class VerifyCodePage extends StatelessWidget {
                       icon: CircleAvatar(
                         backgroundColor: Theme.of(
                           context,
-                        ).colorScheme.error.withValues(alpha: 0.5),
+                        ).colorScheme.primary.withValues(alpha: 0.5),
                         radius: 60,
                         child: CircleAvatar(
                           backgroundColor: Theme.of(
                             context,
-                          ).colorScheme.error.withValues(alpha: 0.7),
+                          ).colorScheme.primary.withValues(alpha: 0.7),
                           radius: 50,
                           child: CircleAvatar(
                             backgroundColor: Theme.of(
                               context,
-                            ).colorScheme.error,
+                            ).colorScheme.primary,
                             radius: 40,
                             child: SvgPicture.asset(
                               "assets/svgs/done_task.svg",
