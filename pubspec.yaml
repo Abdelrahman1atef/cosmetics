@@ -38,6 +38,8 @@ dependencies:
   flutter_screenutil:
   pin_code_fields:
   vector_graphics: any
+  dio:
+  pretty_dio_logger:
 dev_dependencies:
   flutter_test:
     sdk: flutter

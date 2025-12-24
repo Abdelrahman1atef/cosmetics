@@ -1,5 +1,5 @@
 import 'package:cosmetics/core/widgets/app_Image.dart';
-import 'package:cosmetics/views/home/check_out.dart';
+import 'package:cosmetics/views/check_out.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

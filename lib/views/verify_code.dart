@@ -4,16 +4,23 @@ import 'package:cosmetics/core/widgets/custom_button.dart';
 import 'package:cosmetics/views/home/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../core/widgets/app_Image.dart';
+import '../features/auth/register.dart';
 import 'login.dart';
 
 class VerifyCodePage extends StatelessWidget {
-  const VerifyCodePage({super.key, required this.isRegister});
+  const VerifyCodePage({
+    super.key,
+    required this.isRegister,
+    required this.phoneNumber,
+  });
 
   final bool isRegister;
+  final String phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -31,30 +38,36 @@ class VerifyCodePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const AppImage(image:"app_icon.svg", width: 100),
-              const SizedBox(height:40),
+              const AppImage(image: "app_icon.svg", width: 100),
+              const SizedBox(height: 40),
               Text("Verify Code", style: TextTheme.of(context).titleLarge),
-              const SizedBox(height:40),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "We just sent a 4-digit verification code to\n",
-                      style: TextTheme.of(context).titleMedium,
+              const SizedBox(height: 40),
+              BlocBuilder<RegisterCubit, RegisterState>(
+                builder: (context, state) {
+                  final phoneNum = phoneNumber;
+                  return RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "We just sent a 4-digit verification code to\n",
+                          style: TextTheme.of(context).titleMedium,
+                        ),
+                        TextSpan(
+                          text: phoneNum,
+                          style: TextTheme.of(context).displayMedium,
+                        ),
+                        TextSpan(
+                          text:
+                              ". Enter the code in the box below to continue.",
+                          style: TextTheme.of(context).titleMedium,
+                        ),
+                      ],
                     ),
-                    TextSpan(
-                      text: "+20 1022658997",
-                      style: TextTheme.of(context).displayMedium,
-                    ),
-                    TextSpan(
-                      text: ". Enter the code in the box below to continue.",
-                      style: TextTheme.of(context).titleMedium,
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
-              const SizedBox(height:50),
+              const SizedBox(height: 50),
               Row(
                 children: [
                   GestureDetector(
@@ -66,7 +79,7 @@ class VerifyCodePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height:50),
+              const SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsetsGeometry.symmetric(horizontal: 60),
                 child: PinCodeTextField(
@@ -99,7 +112,8 @@ class VerifyCodePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height:50),
+              const SizedBox(height: 50),
+
               ///todo add timer for resend code
               GestureDetector(
                 onTap: () {},
@@ -126,14 +140,16 @@ class VerifyCodePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height:50),
+              const SizedBox(height: 50),
 
               CustomButton(
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).scaffoldBackgroundColor,
                       shape: RoundedSuperellipseBorder(
                         borderRadius: BorderRadiusGeometry.circular(30),
                       ),

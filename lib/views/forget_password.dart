@@ -56,13 +56,13 @@ class ForgetPasswordPage extends StatelessWidget {
             CustomButton(
               ///Todo add validator to nav
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const VerifyCodePage(isRegister: false),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) =>
+                //         const VerifyCodePage(isRegister: false),
+                //   ),
+                // );
               },
               child: Text("Next", style: TextTheme.of(context).bodyMedium),
             ),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 
 class CustomDropdownMenu extends StatelessWidget {
-  const CustomDropdownMenu({super.key});
-
+  const CustomDropdownMenu({super.key,  this.onChanged});
+  final ValueChanged<String?>? onChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,10 +14,9 @@ class CustomDropdownMenu extends StatelessWidget {
         borderRadius: BorderRadius.circular(13)
       ),
       child: DropdownButton(
-        onChanged: (value) {
 
-        },
-        value: "1",
+        onChanged: onChanged,
+        value: "+20",
         borderRadius: BorderRadius.circular(13),
         elevation: 0,
         icon: const Icon(Icons.keyboard_arrow_down_rounded),
@@ -27,8 +26,8 @@ class CustomDropdownMenu extends StatelessWidget {
           color: ColorScheme.of(context).secondary,
         ),
         items: const [
-          DropdownMenuItem(value: "1", child: Text('+20')),
-          DropdownMenuItem(value: "2", child: Text('+21')),
+          DropdownMenuItem(value: "+20", child: Text('+20')),
+          DropdownMenuItem(value: "+21", child: Text('+21')),
         ],
       ),
     );
