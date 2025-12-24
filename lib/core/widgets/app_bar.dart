@@ -36,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             backgroundColor: Theme.of(context).hintColor.withValues(
               alpha: 0.3
             ),
-            child: AppImage(image: "arrow_back.svg")),
+            child: const AppImage(image: "arrow_back.svg")),
           )
           : null,
       centerTitle: true,
@@ -54,9 +54,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               InkWell(
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CheckOutView()),
+                  MaterialPageRoute(builder: (context) => const CheckOutView()),
                 ),
-                child: AppImage(image: "check_out.svg", width: 30),
+                child: const AppImage(image: "check_out.svg", width: 30),
               ),
             ]
           : null,

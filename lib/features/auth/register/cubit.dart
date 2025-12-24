@@ -15,15 +15,15 @@ class RegisterCubit extends Cubit<RegisterState> {
     final dio = DioClient.getDio();
     try {
 
-      final response = await dio?.post(
+      final response = await dio.post(
         ApiConstant.register,
         data: registerRequestModel.toJson(),
       );
-      if (response == null || response.data == null ||response.statusCode == 200) {
+      if (response.data == null ||response.statusCode == 200) {
         emit(RegisterState(
           isLoading: false,
           isInitial: false,
-          registerResponseModel: RegisterResponseModel.fromJson(response?.data),
+          registerResponseModel: RegisterResponseModel.fromJson(response.data),
         ));
       }else{
         emit(RegisterState(isLoading: false, isInitial: false,errorMessage: response.data["message"]));

@@ -1,4 +1,3 @@
-import 'package:cosmetics/views/verify_code.dart';
 import 'package:flutter/material.dart';
 
 import '../core/widgets/app_Image.dart';

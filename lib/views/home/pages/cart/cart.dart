@@ -246,7 +246,7 @@ class CartPage extends StatelessWidget {
 
                     ///todo add nav to check out screen
                     CustomButton(
-                      onPressed: () =>Navigator.push(context, MaterialPageRoute(builder: (context) => CheckOutView(),)),
+                      onPressed: () =>Navigator.push(context, MaterialPageRoute(builder: (context) => const CheckOutView(),)),
                       width: 50,
                       borderRadius: 13,
                       padding: const EdgeInsetsGeometry.symmetric(horizontal: 30),

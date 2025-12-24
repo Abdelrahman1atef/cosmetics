@@ -58,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
                 backgroundColor: Theme.of(context).colorScheme.secondary,
                 content: Text(state.errorMessage!,style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   color: Colors.white,

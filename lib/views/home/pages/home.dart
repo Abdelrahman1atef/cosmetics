@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/widgets/app_Image.dart';
 import '../../../core/widgets/app_bar.dart';
@@ -49,13 +48,13 @@ class HomePage extends StatelessWidget {
                                   context,
                                 ).textTheme.headlineMedium,
                               ),
-                              AppImage(image: "offer.svg"),
+                              const AppImage(image: "offer.svg"),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AppImage(image:"offer.svg"),
+                              const AppImage(image:"offer.svg"),
                               Text(
                                 "Hurry up! \nSkin care only !",
                                 style: Theme.of(context).textTheme.displayMedium

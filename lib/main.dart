@@ -1,6 +1,4 @@
-import 'package:cosmetics/views/check_out.dart';
 import 'package:cosmetics/views/home/view.dart';
-import 'package:cosmetics/views/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

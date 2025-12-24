@@ -86,7 +86,7 @@ class CheckOutView extends StatelessWidget {
                     horizontal: 20,
                     vertical: 5,
                   ),
-                  leading: AppImage(image: "meza.svg"),
+                  leading: const AppImage(image: "meza.svg"),
                   title: Text(
                     "**** **** **** 0256",
                     style: Theme.of(context).textTheme.displayMedium,
@@ -110,7 +110,7 @@ class CheckOutView extends StatelessWidget {
                     horizontal: 20,
                     vertical: 5,
                   ),
-                  leading: AppImage(image: "voucher.svg", width: 30),
+                  leading: const AppImage(image: "voucher.svg", width: 30),
                   title: Text(
                     "Add vaucher",
                     style: Theme.of(context).textTheme.displayMedium,
@@ -118,7 +118,7 @@ class CheckOutView extends StatelessWidget {
                   trailing: CustomButton(
                     width: 20,
                     borderRadius: 100,
-                    padding: EdgeInsetsGeometry.symmetric(horizontal: 30,vertical: 10),
+                    padding: const EdgeInsetsGeometry.symmetric(horizontal: 30,vertical: 10),
                     onPressed: () {},
                     child: Text("Apply", style: TextTheme.of(context).bodyMedium),
                   ),
@@ -131,7 +131,7 @@ class CheckOutView extends StatelessWidget {
                 maxLines: 1,
                 style: const TextStyle(
                   letterSpacing: 5.0,
-                  color: Color(0xFF434C6D4F),
+                  color: Color(0xff434c6d4f),
                 ),
               ),
               const SizedBox(height: 20),
@@ -260,7 +260,7 @@ class CheckOutView extends StatelessWidget {
 }
 
 class _CustomListTile extends StatelessWidget {
-  const _CustomListTile({super.key, required this.child});
+  const _CustomListTile({required this.child});
 
   final Widget child;
 

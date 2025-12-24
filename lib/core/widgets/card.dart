@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'app_Image.dart';
 
@@ -48,7 +47,7 @@ class CustomCard extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadiusGeometry.circular(8),
                     ),
-                    child: AppImage(image: "add_to_cart.svg")
+                    child: const AppImage(image: "add_to_cart.svg")
                   ),
                 ),
               ],
