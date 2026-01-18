@@ -1,7 +1,7 @@
-import 'package:cosmetics/core/widgets/app_Image.dart';
+import 'package:cosmetics/core/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/widgets/app_bar.dart';
+import '../../../core/widgets/my_app_bar.dart';
 
 class CategoriesPage extends StatelessWidget {
   const CategoriesPage({super.key});
@@ -10,7 +10,7 @@ class CategoriesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const CustomAppBar(
+      appBar: const MyAppBar(
         haveSearchBar: true,
         haveTitle: true,
         title: "Categories",

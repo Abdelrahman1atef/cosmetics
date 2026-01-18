@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/widgets/app_Image.dart';
+import '../../../core/widgets/app_image.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});

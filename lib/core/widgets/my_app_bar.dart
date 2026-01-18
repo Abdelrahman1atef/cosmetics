@@ -1,9 +1,9 @@
-import 'package:cosmetics/core/widgets/app_Image.dart';
+import 'package:cosmetics/core/widgets/app_image.dart';
 import 'package:cosmetics/views/check_out.dart';
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const MyAppBar({
     super.key,
     required this.haveTitle,
     required this.haveSearchBar,
@@ -54,7 +54,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               InkWell(
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CheckOutView()),
+                  MaterialPageRoute<void>(builder: (context) => const CheckOutView()),
                 ),
                 child: const AppImage(image: "check_out.svg", width: 30),
               ),

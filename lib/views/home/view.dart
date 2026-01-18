@@ -1,20 +1,20 @@
-import 'package:cosmetics/views/home/pages/cart/cart.dart';
+import 'package:cosmetics/views/home/pages/cart/view.dart';
 import 'package:cosmetics/views/home/pages/categories.dart';
 import 'package:cosmetics/views/home/pages/home.dart';
 import 'package:cosmetics/views/home/pages/profile.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/widgets/app_Image.dart';
+import '../../core/widgets/app_image.dart';
 
-class MainView extends StatefulWidget {
-  const MainView({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  State<MainView> createState() => _MainViewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _MainViewState extends State<MainView> {
-  List<Widget> screens = [
+class _HomeViewState extends State<HomeView> {
+  final screens = [
     const HomePage(),
     const CategoriesPage(),
     const CartPage(),

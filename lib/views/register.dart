@@ -3,21 +3,21 @@ import 'package:cosmetics/views/login.dart';
 import 'package:cosmetics/views/verify_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../core/widgets/app_Image.dart';
-import '../core/widgets/custom_button.dart';
-import '../core/widgets/custom_dropdownmenu.dart';
-import '../core/widgets/custom_textformfield.dart';
+import '../core/widgets/app_image.dart';
+import '../core/widgets/app_button.dart';
+import '../core/widgets/app_drop_menu.dart';
+import '../core/widgets/app_input.dart';
 import '../features/auth/register/cubit.dart';
 import '../features/auth/register/model.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterViewState extends State<RegisterView> {
   final _key = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -25,12 +25,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
-  @override
-  void initState() {
-    //todo add api call for countries codes
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -48,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state.isLoading) {
-          showDialog(
+          showDialog<void>(
             context: context,
             builder: (context) =>
                 const Center(child: CircularProgressIndicator()),
@@ -70,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>  VerifyCodePage(
+              builder: (context) =>  VerifyCodeView(
                 isRegister: true,
                 phoneNumber: "${_countryCodeController.text} ${_phoneController.text}",
               ),
@@ -99,12 +93,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 key: _key,
                 child: Column(
                   children: [
-                    CustomTextFormField(
+                    AppInput(
                       labelText: "Your Name",
                       controller: _nameController,
                     ),
                     const SizedBox(height: 16),
-                    CustomTextFormField(
+                    AppInput(
                       labelText: "Email",
                       controller: _emailController,
                       validator: (value) {
@@ -122,15 +116,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ///Todo add validator to DropdownMenu
-                        CustomDropdownMenu(
+                        AppDropMenu(
                           onChanged: (value) {
                             _countryCodeController.text = value!;
-                            print(_countryCodeController.text);
                           },
                         ),
                         const SizedBox(width: 6),
                         Expanded(
-                          child: CustomTextFormField(
+                          child: AppInput(
                             labelText: "Phone Number",
                             controller: _phoneController,
                             validator: (value) {
@@ -151,7 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     const SizedBox(height: 16),
 
-                    CustomTextFormField(
+                    AppInput(
                       controller: _passwordController,
                       labelText: "Create your password",
                       isPasswordField: true,
@@ -166,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    CustomTextFormField(
+                    AppInput(
                       controller: _confirmPasswordController,
                       labelText: "Confirm password",
                       isPasswordField: true,
@@ -184,7 +177,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               const SizedBox(height: 50),
-              CustomButton(
+              AppButton(
                 isChildIcon: false,
 
                 ///Todo add validator to form and send api call to nav
@@ -212,7 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: GestureDetector(
             onTap: () => Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
+              MaterialPageRoute(builder: (context) => const LoginView()),
             ),
             child: RichText(
               textAlign: TextAlign.center,

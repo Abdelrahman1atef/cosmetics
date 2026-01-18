@@ -1,6 +1,6 @@
-import 'package:cosmetics/core/widgets/app_Image.dart';
-import 'package:cosmetics/core/widgets/app_bar.dart';
-import 'package:cosmetics/core/widgets/custom_button.dart';
+import 'package:cosmetics/core/widgets/app_image.dart';
+import 'package:cosmetics/core/widgets/my_app_bar.dart';
+import 'package:cosmetics/core/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 
 class CheckOutView extends StatelessWidget {
@@ -10,7 +10,7 @@ class CheckOutView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const CustomAppBar(
+      appBar: const MyAppBar(
         haveTitle: true,
         haveSearchBar: false,
         title: "Checkout",
@@ -115,7 +115,7 @@ class CheckOutView extends StatelessWidget {
                     "Add vaucher",
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
-                  trailing: CustomButton(
+                  trailing: AppButton(
                     width: 20,
                     borderRadius: 100,
                     padding: const EdgeInsetsGeometry.symmetric(horizontal: 30,vertical: 10),
@@ -131,7 +131,7 @@ class CheckOutView extends StatelessWidget {
                 maxLines: 1,
                 style: const TextStyle(
                   letterSpacing: 5.0,
-                  color: Color(0xff434c6d4f),
+                  color: Color(0xFF434c6d),
                 ),
               ),
               const SizedBox(height: 20),
@@ -232,7 +232,7 @@ class CheckOutView extends StatelessWidget {
               ///todo add nav to check out screen
               Padding(
                 padding: const EdgeInsetsGeometry.symmetric(horizontal: 50),
-                child: CustomButton(
+                child: AppButton(
                   onPressed: () {},
                   width: 50,
                   borderRadius: 50,

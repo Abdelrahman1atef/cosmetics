@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/widgets/app_Image.dart';
-import '../../../core/widgets/app_bar.dart';
+import '../../../core/widgets/app_image.dart';
+import '../../../core/widgets/my_app_bar.dart';
 import '../../../core/widgets/card.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const CustomAppBar(haveSearchBar: true, haveTitle: false),
+      appBar: const MyAppBar(haveSearchBar: true, haveTitle: false),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsetsGeometry.all(13),

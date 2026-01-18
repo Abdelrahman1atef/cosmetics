@@ -1,16 +1,16 @@
 // ignore_for_file: inference_failure_on_instance_creation
 
-import 'package:cosmetics/core/widgets/custom_button.dart';
-import 'package:cosmetics/core/widgets/custom_dropdownmenu.dart';
+import 'package:cosmetics/core/widgets/app_button.dart';
+import 'package:cosmetics/core/widgets/app_drop_menu.dart';
 import 'package:cosmetics/views/forget_password.dart';
 import 'package:cosmetics/views/register.dart';
 import 'package:flutter/material.dart';
-import '../core/widgets/app_Image.dart';
-import '../core/widgets/custom_textformfield.dart';
+import '../core/widgets/app_image.dart';
+import '../core/widgets/app_input.dart';
 import 'home/view.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginView extends StatelessWidget {
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsetsGeometry.directional(end: 20),
-              child: const AppImage(image:"login_img.png", width: 380),
+              child: const AppImage(image:"login.png", width: 380),
             ),
             Text("Login Now", style: TextTheme.of(context).titleLarge),
             const SizedBox(height:14),
@@ -45,18 +45,18 @@ class LoginPage extends StatelessWidget {
                     children: [
                       ///Todo style dropdown menu
                       ///Todo add validator
-                      CustomDropdownMenu(),
+                      AppDropMenu(),
                       SizedBox(width:6),
                       Expanded(
                         ///Todo add validator
-                        child: CustomTextFormField(labelText: "Phone Number"),
+                        child: AppInput(labelText: "Phone Number"),
                       ),
                     ],
                   ),
                   SizedBox(height:16),
 
                   ///Todo add validator
-                  CustomTextFormField(labelText: "Your Password"),
+                  AppInput(labelText: "Your Password"),
                 ],
               ),
             ),
@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ForgetPasswordPage(),
+                      builder: (context) => const ForgetPasswordView(),
                     ),
                   ),
                   child: Text(
@@ -80,14 +80,14 @@ class LoginPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height:40),
-            CustomButton(
+            AppButton(
               isChildIcon: false,
 
               ///Todo add validator to nav
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainView()),
+                  MaterialPageRoute(builder: (context) => const HomeView()),
                 );
               },
               child: Text("Login", style: TextTheme.of(context).bodyMedium),
@@ -100,7 +100,7 @@ class LoginPage extends StatelessWidget {
         child: GestureDetector(
           onTap: () => Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const RegisterPage()),
+            MaterialPageRoute(builder: (context) => const RegisterView()),
           ),
           child: RichText(
             textAlign: TextAlign.center,

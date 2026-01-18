@@ -1,13 +1,13 @@
-import 'package:cosmetics/views/home/view.dart';
+import 'package:cosmetics/views/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:device_preview/device_preview.dart';
 
 import 'features/auth/register/cubit.dart';
 
-void main (){
-  runApp(const AvonApp());
+void main() {
+  runApp(DevicePreview(enabled: false, builder: (context) => const AvonApp()));
 }
-
 
 class AvonApp extends StatelessWidget {
   const AvonApp({super.key});
@@ -15,12 +15,10 @@ class AvonApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => RegisterCubit()),
-      ],
+      providers: [BlocProvider(create: (context) => RegisterCubit())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const MainView(),
+        home: const SplashView(),
         theme: ThemeData(
           useMaterial3: true,
           fontFamily: "Montserrat",
@@ -47,7 +45,7 @@ class AvonApp extends StatelessWidget {
               fontFamily: 'Montserrat',
               fontSize: 18,
               fontVariations: <FontVariation>[FontVariation('wght', 700)],
-              color:  Color(0xFF62322D),
+              color: Color(0xFF62322D),
             ),
             displayLarge: TextStyle(
               fontFamily: 'Montserrat',
@@ -67,23 +65,17 @@ class AvonApp extends StatelessWidget {
               color: Color(0xFFCD0F0F),
               fontVariations: <FontVariation>[FontVariation('wght', 600)],
             ),
-            bodyMedium: TextStyle(
-              fontFamily: 'Segoe',
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+            bodyMedium: TextStyle(fontFamily: 'Segoe', fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
             labelMedium: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 18,
               fontVariations: <FontVariation>[FontVariation('wght', 600)],
               color: Color(0xFFD75D72),
             ),
-
           ),
           useSystemColors: true,
           hintColor: const Color(0xFF8E8EA9),
-          scaffoldBackgroundColor:const Color(0xFFD9D9D9),
+          scaffoldBackgroundColor: const Color(0xFFD9D9D9),
           colorScheme: const ColorScheme(
             brightness: Brightness.light,
             primary: Color(0xFFD75D72),
@@ -97,43 +89,24 @@ class AvonApp extends StatelessWidget {
           ),
           searchBarTheme: const SearchBarThemeData(
             elevation: WidgetStatePropertyAll(0),
-            padding: WidgetStatePropertyAll(
-              EdgeInsetsDirectional.symmetric(
-                horizontal: 15,
-                vertical: 5,
-              ),
+            padding: WidgetStatePropertyAll(EdgeInsetsDirectional.symmetric(horizontal: 15, vertical: 5)),
+            side: WidgetStatePropertyAll(BorderSide(color: Color(0xFFB3B3C1), width: 1)),
+            backgroundColor: WidgetStatePropertyAll(Color(0xFFD9D9D9)),
+          ),
+          inputDecorationTheme: InputDecorationThemeData(
+            // labelStyle: TextTheme.of(context).titleMedium,
+            // floatingLabelStyle: TextTheme.of(context).titleMedium?.copyWith(fontSize: 25),
+            focusedBorder: OutlineInputBorder(
+              gapPadding: 16,
+              borderRadius: BorderRadius.circular(13),
+              borderSide: BorderSide(color: Theme.of(context).hintColor, width: 2),
             ),
-            side: WidgetStatePropertyAll(
-              BorderSide(
-                color: Color(0xFFB3B3C1),
-                width: 1,
-              ),
-            ),
-            backgroundColor: WidgetStatePropertyAll(
-              Color(0xFFD9D9D9),
+            enabledBorder: OutlineInputBorder(
+              gapPadding: 16,
+              borderRadius: BorderRadius.circular(13),
+              borderSide: BorderSide(color: Theme.of(context).hintColor, width: 2),
             ),
           ),
-         inputDecorationTheme:  InputDecorationThemeData(
-           // labelStyle: TextTheme.of(context).titleMedium,
-           // floatingLabelStyle: TextTheme.of(context).titleMedium?.copyWith(fontSize: 25),
-           focusedBorder: OutlineInputBorder(
-             gapPadding: 16,
-             borderRadius: BorderRadius.circular(13),
-             borderSide: BorderSide(
-               color: Theme.of(context).hintColor,
-               width: 2,
-             ),
-           ),
-           enabledBorder: OutlineInputBorder(
-             gapPadding: 16,
-             borderRadius: BorderRadius.circular(13),
-             borderSide: BorderSide(
-               color: Theme.of(context).hintColor,
-               width: 2,
-             ),
-           ),
-         )
-
         ),
       ),
     );

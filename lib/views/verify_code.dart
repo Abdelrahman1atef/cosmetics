@@ -1,6 +1,6 @@
 // ignore_for_file: inference_failure_on_instance_creation
 
-import 'package:cosmetics/core/widgets/custom_button.dart';
+import 'package:cosmetics/core/widgets/app_button.dart';
 import 'package:cosmetics/views/home/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,12 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../core/widgets/app_Image.dart';
+import '../core/widgets/app_image.dart';
 import '../features/auth/register/cubit.dart';
 import 'login.dart';
 
-class VerifyCodePage extends StatelessWidget {
-  const VerifyCodePage({
+class VerifyCodeView extends StatelessWidget {
+  const VerifyCodeView({
     super.key,
     required this.isRegister,
     required this.phoneNumber,
@@ -142,9 +142,9 @@ class VerifyCodePage extends StatelessWidget {
               ),
               const SizedBox(height: 50),
 
-              CustomButton(
+              AppButton(
                 onPressed: () {
-                  showDialog(
+                  showDialog<void>(
                     context: context,
                     builder: (context) => AlertDialog(
                       backgroundColor: Theme.of(
@@ -191,7 +191,7 @@ class VerifyCodePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       actions: [
-                        CustomButton(
+                        AppButton(
                           width: 90,
                           onPressed: () {
                             Navigator.pop(context);
@@ -199,8 +199,8 @@ class VerifyCodePage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => isRegister
-                                    ? const MainView()
-                                    : const LoginPage(),
+                                    ? const HomeView()
+                                    : const LoginView(),
                               ),
                               (route) => false,
                             );

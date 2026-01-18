@@ -1,10 +1,10 @@
-import 'package:cosmetics/core/widgets/custom_button.dart';
+import 'package:cosmetics/core/widgets/app_button.dart';
 import 'package:cosmetics/views/check_out.dart';
-import 'package:cosmetics/views/home/pages/cart/widget/counter.dart';
+import 'package:cosmetics/views/home/pages/cart/widgets/counter.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/widgets/app_Image.dart';
-import '../../../../core/widgets/app_bar.dart';
+import '../../../../core/widgets/app_image.dart';
+import '../../../../core/widgets/my_app_bar.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -13,7 +13,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const CustomAppBar(
+      appBar: const MyAppBar(
         haveSearchBar: false,
         haveTitle: true,
         haveAction: true,
@@ -245,8 +245,8 @@ class CartPage extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     ///todo add nav to check out screen
-                    CustomButton(
-                      onPressed: () =>Navigator.push(context, MaterialPageRoute(builder: (context) => const CheckOutView(),)),
+                    AppButton(
+                      onPressed: () =>Navigator.push(context, MaterialPageRoute<void>(builder: (context) => const CheckOutView(),)),
                       width: 50,
                       borderRadius: 13,
                       padding: const EdgeInsetsGeometry.symmetric(horizontal: 30),

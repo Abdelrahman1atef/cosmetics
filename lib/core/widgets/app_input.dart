@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-class CustomTextFormField extends StatefulWidget {
-  const CustomTextFormField({
+class AppInput extends StatefulWidget {
+  const AppInput({
     super.key,
     required this.labelText,
     this.isPasswordField = false, this.controller, this.validator,
@@ -12,10 +12,10 @@ class CustomTextFormField extends StatefulWidget {
   final String labelText;
   final FormFieldValidator<String>? validator;
   @override
-  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+  State<AppInput> createState() => _AppInputState();
 }
 
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
+class _AppInputState extends State<AppInput> {
   bool passwordIsHidden = true;
 
   @override

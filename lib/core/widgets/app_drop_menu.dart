@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-class CustomDropdownMenu extends StatelessWidget {
-  const CustomDropdownMenu({super.key,  this.onChanged});
+class AppDropMenu extends StatelessWidget {
+  const AppDropMenu({super.key,  this.onChanged});
   final ValueChanged<String?>? onChanged;
   @override
   Widget build(BuildContext context) {

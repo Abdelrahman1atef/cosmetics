@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'app_Image.dart';
+import 'app_image.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({super.key, required this.image});

@@ -1,19 +1,19 @@
 // ignore_for_file: inference_failure_on_instance_creation
 
-import 'package:cosmetics/core/widgets/custom_button.dart';
+import 'package:cosmetics/core/widgets/app_button.dart';
 import 'package:cosmetics/views/login.dart';
 import 'package:flutter/material.dart';
 
-import '../core/widgets/app_Image.dart';
+import '../core/widgets/app_image.dart';
 
-class OnboardingPage extends StatefulWidget {
-  const OnboardingPage({super.key});
+class OnBoardingView extends StatefulWidget {
+  const OnBoardingView({super.key});
 
   @override
-  State<OnboardingPage> createState() => _SplashScreenState();
+  State<OnBoardingView> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<OnboardingPage> {
+class _SplashScreenState extends State<OnBoardingView> {
   final controller = PageController();
   int currentPage = 0;
 
@@ -23,7 +23,6 @@ class _SplashScreenState extends State<OnboardingPage> {
     controller.addListener(() {
       setState(() {
         currentPage = controller.page!.toInt();
-        print(currentPage);
       });
     });
   }
@@ -49,22 +48,20 @@ class _SplashScreenState extends State<OnboardingPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginPage()),
-                      ),
-                      child: currentPage == 2
-                          ?const SizedBox.shrink():Text(
-                        "Skip",
-                        style: Theme.of(context).textTheme.displayMedium,
+                    Align(
+                      alignment: AlignmentGeometry.centerRight,
+                      child: TextButton(
+                        onPressed: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginView()),
+                        ),
+                        child: currentPage == 2
+                            ?const SizedBox.shrink():Text(
+                          "Skip",
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
                       ),
                     ),
-                  ],
-                ),
                 Column(
                   children: [
                     AppImage(image: page.image, height: 390),
@@ -90,7 +87,7 @@ class _SplashScreenState extends State<OnboardingPage> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 30),
-                    CustomButton(
+                    AppButton(
                       isChildIcon: currentPage != 2,
                       onPressed: () {
                         setState(() {
@@ -101,7 +98,7 @@ class _SplashScreenState extends State<OnboardingPage> {
                               : Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
+                                    builder: (context) => const LoginView(),
                                   ),
                                 );
                         });

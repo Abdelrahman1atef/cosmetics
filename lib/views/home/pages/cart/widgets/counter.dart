@@ -1,4 +1,4 @@
-import 'package:cosmetics/core/widgets/app_Image.dart';
+import 'package:cosmetics/core/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 
 class CounterWidget extends StatefulWidget {

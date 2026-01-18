@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../core/widgets/app_Image.dart';
-import '../core/widgets/custom_button.dart';
-import '../core/widgets/custom_dropdownmenu.dart';
-import '../core/widgets/custom_textformfield.dart';
+import '../core/widgets/app_image.dart';
+import '../core/widgets/app_button.dart';
+import '../core/widgets/app_drop_menu.dart';
+import '../core/widgets/app_input.dart';
 
-class ForgetPasswordPage extends StatelessWidget {
-  const ForgetPasswordPage({super.key});
+class ForgetPasswordView extends StatelessWidget {
+  const ForgetPasswordView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +40,11 @@ class ForgetPasswordPage extends StatelessWidget {
                     children: [
                       ///Todo style dropdown menu
                       ///Todo add validator
-                      CustomDropdownMenu(),
+                      AppDropMenu(),
                       SizedBox(width:6),
                       Expanded(
                         ///Todo add validator
-                        child: CustomTextFormField(labelText: "Phone Number"),
+                        child: AppInput(labelText: "Phone Number"),
                       ),
                     ],
                   ),
@@ -52,7 +52,7 @@ class ForgetPasswordPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height:60),
-            CustomButton(
+            AppButton(
               ///Todo add validator to nav
               onPressed: () {
                 // Navigator.push(
