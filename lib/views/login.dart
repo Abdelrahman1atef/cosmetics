@@ -6,7 +6,8 @@ import 'package:cosmetics/views/forget_password.dart';
 import 'package:cosmetics/views/register.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../core/network/api_constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../core/logic/helper_method.dart';
 import '../core/network/dio_helper.dart';
 import '../core/widgets/app_image.dart';
 import '../core/widgets/app_input.dart';
@@ -39,32 +40,24 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  void _reqValidation(BuildContext context, Response<dynamic> response) {
+  void _req(BuildContext context,Map<String,dynamic> data)async {
+    final response = await DioHelper.postData(endpoint: "api/Auth/login", data: data);
+
     showDialog<void>(
       context: context,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
-    if (response.data == null || response.statusCode != 200) {
+    if (!response.isSuccess) {
       Navigator.pop(context);
-      final data = response.data['message'];
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 3),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          content: Text(data, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white)),
-        ),
-      );
+      final msg = response.data['message'];
+      showMsg(msg);
       return;
     }
-    if (response.data != null || response.statusCode == 200) {
-      Navigator.pop(context);
-      print(response.data["token"]);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeView()),
-        (route) => false);
+    Navigator.pop(context);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("token", response.data["token"]);
+    goto(const HomeView(),canPop: false);
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,9 +144,8 @@ class _LoginViewState extends State<LoginView> {
                     "phoneNumber": _phoneController.text,
                     "password": _passwordController.text,
                   };
-                  final response = await DioHelper().postData(endpoint: ApiConstant.login, data: data);
                   if (context.mounted) {
-                    _reqValidation(context, response);
+                    _req(context,data);
                   }
                 }
               },

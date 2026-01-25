@@ -1,8 +1,7 @@
+import 'package:cosmetics/core/logic/helper_method.dart';
 import 'package:cosmetics/views/verify_code.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-import '../core/network/api_constant.dart';
 import '../core/network/dio_helper.dart';
 import '../core/widgets/app_image.dart';
 import '../core/widgets/app_button.dart';
@@ -26,45 +25,28 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
     super.initState();
     _countryCodeController.text = "+20";
   }
-  void _reqValidation(BuildContext context, Response<dynamic> response) {
+
+  void _req(BuildContext context, dynamic data) async {
+    final response = await DioHelper.postData(endpoint: "api/Auth/forgot-password", data: data);
+
     showDialog<void>(
       context: context,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
-    if (response.data == null || response.statusCode != 200) {
+    if (!response.isSuccess) {
       Navigator.pop(context);
-      final data = response.data['message'];
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 3),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          content: Text(data, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white)),
-        ),
-      );
+      final msg = response.data['message'];
+      showMsg(msg);
       return;
     }
-    if (response.data != null || response.statusCode == 200) {
-      Navigator.pop(context);
-      final data = response.data['message'];
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 3),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          content: Text(data, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white)),
-        ),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-          builder: (context) => VerifyCodeView(
-            isRegister: false,
-            countryCode: _countryCodeController.text,
-            phoneNumber: _phoneController.text,
-          ),
-        ),
-      );
-    }
+    Navigator.pop(context);
+    goto(VerifyCodeView(
+      isRegister: false,
+      countryCode: _countryCodeController.text,
+      phoneNumber: _phoneController.text,
+    ));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,13 +89,16 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       const SizedBox(width: 6),
                       Expanded(
                         ///Todo add validator
-                        child: AppInput(controller: _phoneController, labelText: "Phone Number",validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          return null;
-
-                        },),
+                        child: AppInput(
+                          controller: _phoneController,
+                          labelText: "Phone Number",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your phone number';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -122,15 +107,11 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
             ),
             const SizedBox(height: 60),
             AppButton(
-              onPressed: () async{
-                if(_key.currentState!.validate()){
-                  final data = {
-                    "countryCode": _countryCodeController.text,
-                    "phoneNumber": _phoneController.text,
-                  };
-                  final response = await DioHelper().postData(endpoint: ApiConstant.forgotPassword, data: data);
+              onPressed: ()  {
+                if (_key.currentState!.validate()) {
+                  final data = {"countryCode": _countryCodeController.text, "phoneNumber": _phoneController.text};
                   if (context.mounted) {
-                    _reqValidation(context, response);
+                    _req(context, data);
                   }
                 }
               },

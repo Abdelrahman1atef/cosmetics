@@ -1,9 +1,9 @@
 // ignore_for_file: inference_failure_on_instance_creation
+import 'package:cosmetics/core/logic/helper_method.dart';
 import 'package:cosmetics/views/login.dart';
 import 'package:cosmetics/views/verify_code.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../core/network/api_constant.dart';
 import '../core/network/dio_helper.dart';
 import '../core/widgets/app_image.dart';
 import '../core/widgets/app_button.dart';
@@ -38,36 +38,23 @@ class _RegisterViewState extends State<RegisterView> {
     super.dispose();
   }
 
-  void _reqValidation(BuildContext context, Response<dynamic> response) {
+  void _req(BuildContext context, RegisterRequestModel data) async {
+    final response = await DioHelper.postData(endpoint: "api/Auth/register", data: data.toJson());
+
     showDialog<void>(
       context: context,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
-    if (response.data == null || response.statusCode != 200) {
+    if (!response.isSuccess) {
       Navigator.pop(context);
-      final data = response.data['message'];
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 3),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          content: Text(data, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white)),
-        ),
-      );
+      final msg = response.data['message'];
+      showMsg(msg);
       return;
     }
-    if (response.data != null || response.statusCode == 200) {
-      Navigator.pop(context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => VerifyCodeView(
-            isRegister: true,
-            phoneNumber: _phoneController.text,
-            countryCode: _countryCodeController.text,
-          ),
-        ),
-      );
-    }
+    Navigator.pop(context);
+    goto(
+      VerifyCodeView(isRegister: true, phoneNumber: _phoneController.text, countryCode: _countryCodeController.text),
+    );
   }
 
   @override
@@ -209,7 +196,6 @@ class _RegisterViewState extends State<RegisterView> {
               isChildIcon: false,
               onPressed: () async {
                 if (_key.currentState!.validate()) {
-
                   final RegisterRequestModel data = RegisterRequestModel(
                     username: _nameController.text,
                     countryCode: _countryCodeController.text,
@@ -217,10 +203,7 @@ class _RegisterViewState extends State<RegisterView> {
                     email: _emailController.text,
                     password: _passwordController.text,
                   );
-                  final response = await DioHelper().postData(endpoint: ApiConstant.register, data: data.toJson());
-                  if (context.mounted) {
-                    _reqValidation(context, response);
-                  }
+                  _req(context, data);
                 }
               },
               text: "Next",

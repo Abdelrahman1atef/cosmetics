@@ -2,6 +2,8 @@ import 'package:cosmetics/views/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 
+import 'core/logic/helper_method.dart';
+
 
 void main() {
   runApp(DevicePreview(enabled: false, builder: (context) => const AvonApp()));
@@ -13,6 +15,7 @@ class AvonApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navKey,
       debugShowCheckedModeBanner: false,
       home: const SplashView(),
       theme: ThemeData(

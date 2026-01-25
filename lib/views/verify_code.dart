@@ -1,12 +1,13 @@
 // ignore_for_file: inference_failure_on_instance_creation
 
+import 'package:cosmetics/core/logic/helper_method.dart';
 import 'package:cosmetics/core/widgets/app_button.dart';
+import 'package:cosmetics/views/success_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../core/network/api_constant.dart';
 import '../core/network/dio_helper.dart';
 import '../core/widgets/app_image.dart';
 import 'create_password.dart';
@@ -19,75 +20,26 @@ class VerifyCodeView extends StatelessWidget {
   final String countryCode;
   final String phoneNumber;
 
-  void _reqValidation(BuildContext context, Response<dynamic> response) {
+  void _req(BuildContext context, Map<String, dynamic> data) async {
+    final response = await DioHelper.postData(endpoint: "api/Auth/verify-otp", data: data);
+
     showDialog<void>(
       context: context,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
-    if (response.data == null || response.statusCode != 200) {
+    if (!response.isSuccess) {
       Navigator.pop(context);
-      final data = response.data['message'];
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 3),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          content: Text(data, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white)),
-        ),
-      );
+      final msg = response.data['message'];
+      showMsg(msg);
       return;
     }
-    if (response.data != null || response.statusCode == 200) {
-      Navigator.pop(context);
-      !isRegister
-          ? Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CreatePasswordView(countryCode: countryCode, phoneNumber: phoneNumber),
-              ),
-            )
-          : showDialog<void>(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                shape: RoundedSuperellipseBorder(borderRadius: BorderRadiusGeometry.circular(30)),
-                constraints: const BoxConstraints(minWidth: 360, minHeight: 343),
-                icon: CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
-                  radius: 60,
-                  child: CircleAvatar(
-                    backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
-                    radius: 50,
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      radius: 40,
-                      child: const AppImage(image: 'done_task.svg'),
-                    ),
-                  ),
-                ),
-                alignment: Alignment.center,
-                title: Text("Account Activated!", style: Theme.of(context).textTheme.displayMedium),
-                content: Text(
-                  "Congratulations! Your account has been successfully activated",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                actions: [
-                  AppButton(
-                    width: 90,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginView()),
-                        (route) => false,
-                      );
-                    },
-                    text: "Go to login",
-                  ),
-                ],
-              ),
-            );
-    }
+    Navigator.pop(context);
+    isRegister
+        ? showDialog<void>(
+            context: context,
+            builder: (context) => SuccessDialog(isRegister: isRegister),
+          )
+        : goto(CreatePasswordView(countryCode: countryCode, phoneNumber: phoneNumber));
   }
 
   @override
@@ -192,9 +144,8 @@ class VerifyCodeView extends StatelessWidget {
               AppButton(
                 onPressed: () async {
                   final data = {"countryCode": countryCode, "phoneNumber": phoneNumber, "otpCode": "1111"};
-                  final response = await DioHelper().postData(endpoint: ApiConstant.verifyOtp, data: data);
                   if (context.mounted) {
-                    _reqValidation(context, response);
+                    _req(context, data);
                   }
                 },
                 text: "Done",
