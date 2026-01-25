@@ -72,7 +72,7 @@ class _AppInputState extends State<AppInput> {
           suffixIcon: widget.isPasswordField
               ? passwordIsHidden
                     ? IconButton(
-                        icon: const Icon(Icons.visibility_outlined),
+                        icon: const Icon(Icons.visibility_off_outlined),
                         color: Theme.of(context).hintColor,
                         onPressed: () {
                           setState(() {
@@ -81,7 +81,7 @@ class _AppInputState extends State<AppInput> {
                         },
                       )
                     : IconButton(
-                        icon: const Icon(Icons.visibility_off_outlined),
+                        icon: const Icon(Icons.visibility_outlined),
                         color: Theme.of(context).hintColor,
                         onPressed: () {
                           setState(() {

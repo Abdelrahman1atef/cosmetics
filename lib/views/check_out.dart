@@ -118,9 +118,9 @@ class CheckOutView extends StatelessWidget {
                   trailing: AppButton(
                     width: 20,
                     borderRadius: 100,
-                    padding: const EdgeInsetsGeometry.symmetric(horizontal: 30,vertical: 10),
+                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 30,vertical: 10),
                     onPressed: () {},
-                    child: Text("Apply", style: TextTheme.of(context).bodyMedium),
+                    text: "Apply",
                   ),
                 ),
               ),
@@ -236,10 +236,10 @@ class CheckOutView extends StatelessWidget {
                   onPressed: () {},
                   width: 50,
                   borderRadius: 50,
-                  padding: const EdgeInsetsGeometry.symmetric(horizontal: 30,vertical: 30),
+                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 30,vertical: 30),
                   color: Theme.of(context).primaryColor,
                   isChildIcon: false,
-                  child: Row(
+                  widget: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const AppImage(image: "order.svg"),

@@ -14,12 +14,11 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    if (context.mounted) {
-      Future.delayed(
-        const Duration(seconds: 3),
-        () => Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const OnBoardingView())),
-      );
-    }
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const OnBoardingView()));
+      }
+    });
   }
 
   @override

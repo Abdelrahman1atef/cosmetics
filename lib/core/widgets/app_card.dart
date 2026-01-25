@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'app_image.dart';
 
-class CustomCard extends StatelessWidget {
-  const CustomCard({super.key, required this.image});
+class AppCard extends StatelessWidget {
+  const AppCard({super.key, required this.image});
 
   final String image;
 
@@ -14,8 +14,6 @@ class CustomCard extends StatelessWidget {
       onTap: () {},
       child: Container(
         padding: const EdgeInsetsGeometry.all(10),
-        width: 180,
-        height: 240,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadiusGeometry.circular(16),
@@ -29,28 +27,30 @@ class CustomCard extends StatelessWidget {
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Center(child: AppImage(image: image, fit: BoxFit.cover,height: 200,width: 200,)),
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsetsGeometry.all(8),
-                    margin: const EdgeInsetsGeometry.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadiusGeometry.circular(8),
-                    ),
-                    child: const AppImage(image: "add_to_cart.svg")
+            Expanded(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Center(child: AppImage(image: image, fit: BoxFit.cover,height: 200,width: 200,)),
                   ),
-                ),
-              ],
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      padding: const EdgeInsetsGeometry.all(8),
+                      margin: const EdgeInsetsGeometry.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadiusGeometry.circular(8),
+                      ),
+                      child: const AppImage(image: "add_to_cart.svg")
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             Text(

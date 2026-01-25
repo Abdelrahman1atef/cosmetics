@@ -131,18 +131,17 @@ class CartPage extends StatelessWidget {
               ),
               const SizedBox(height: 50),
               Container(
-                padding: const EdgeInsetsGeometry.symmetric(
+                padding: const EdgeInsetsDirectional.symmetric(
                   horizontal: 20,
                   vertical: 30,
                 ),
-                constraints: const BoxConstraints(minWidth: 150, minHeight: 150),
                 decoration: BoxDecoration(
                   color: const Color(0xFFBBD8D9),
                   borderRadius: BorderRadiusGeometry.circular(13),
                 ),
 
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
                       "- REVIEW PAYMENT",
@@ -244,15 +243,13 @@ class CartPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    ///todo add nav to check out screen
                     AppButton(
                       onPressed: () =>Navigator.push(context, MaterialPageRoute<void>(builder: (context) => const CheckOutView(),)),
-                      width: 50,
                       borderRadius: 13,
-                      padding: const EdgeInsetsGeometry.symmetric(horizontal: 30),
+                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 0),
                       color: const Color(0xFFDA498C),
-                      isChildIcon: false,
-                      child: Row(
+                      widget: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const AppImage(image: "order.svg"),
                           Text(

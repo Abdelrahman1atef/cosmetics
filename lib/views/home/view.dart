@@ -34,10 +34,16 @@ class _HomeViewState extends State<HomeView> {
           shape: BoxShape.rectangle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.3),
+              offset: const Offset(-4, -4),
               spreadRadius: 0,
-              blurRadius: 10,
-              offset: const Offset(0, 2)
+              blurRadius: 6,
+              color: Colors.black.withValues(alpha: 0.1),
+            ),
+            BoxShadow(
+              offset: const Offset(4, 4),
+              spreadRadius: 0,
+              blurRadius: 4,
+              color: Colors.black.withValues(alpha: 0.1),
             ),
           ]
         ),
