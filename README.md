@@ -14,25 +14,17 @@
 
 | Login | Register | OTP Verify | Success dialog |
 |---|---|---|---|
-| ![Login](assets/images/login.png) | ![Register](docs/screenshots/auth_register.png) | ![OTP verify](docs/screenshots/auth_otp.png) | ![Success dialog](docs/screenshots/auth_success.png) |
+| ![Login](https://github.com/user-attachments/assets/1b3f96a8-b9e1-4f74-8aca-419bdecaa317) | ![Register](https://github.com/user-attachments/assets/5820ff50-a789-4b69-b9b3-fe7387d2e9d4) | ![OTP verify](https://github.com/user-attachments/assets/086dc57a-17a8-429d-b590-16ca08a038e2) | ![Success dialog](https://github.com/user-attachments/assets/4a0916e4-4434-4005-8d62-faf522b1b176) |
 
 ### Home (Tabs) + Checkout
 
 | Home | Categories | Cart | Profile |
 |---|---|---|---|
-| ![Home](docs/screenshots/home_tab_home.png) | ![Categories](docs/screenshots/home_tab_categories.png) | ![Cart](docs/screenshots/home_tab_cart.png) | ![Profile](docs/screenshots/home_tab_profile.png) |
+| ![Home](https://github.com/user-attachments/assets/23d9d2c8-a580-4b25-84f1-29260fe5b6a9) | ![Categories](https://github.com/user-attachments/assets/6328395e-5a1a-46ff-a67a-a985a3f3c5ee) | ![Cart](https://github.com/user-attachments/assets/37514c91-35bf-406c-92d7-095841c8a6b4) | ![Profile](https://github.com/user-attachments/assets/15c6940c-f588-41d0-adfb-cacca126e51a) |
 
 | Checkout |
 |---|
-| ![Checkout](docs/screenshots/checkout.png) |
-
-### Onboarding
-
-| Onboarding 1 | Onboarding 2 | Onboarding 3 |
-|---|---|---|
-| ![Onboarding 1](assets/images/on_boarding1.png) | ![Onboarding 2](assets/images/on_boarding2.png) | ![Onboarding 3](assets/images/on_boarding3.png) |
-
-> Note: the `docs/screenshots/*.png` files are placeholders. Add real screenshots with the same filenames to make them appear here.
+| ![Checkout](https://github.com/user-attachments/assets/ae2fa961-15c8-4609-92a7-86b981038148) |
 
 Mobile cosmetics e-commerce UI built with Flutter: onboarding + authentication (register/login/OTP) and a tabbed home experience (Home, Categories, Cart, Profile), with a checkout screen.
 
