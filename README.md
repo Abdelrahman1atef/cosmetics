@@ -6,9 +6,9 @@
 
 ### Splash
 
-| App icon | Splash illustration |
-|---|---|
-| ![App icon](assets/icons/app_icon.svg) | ![Splash](assets/icons/splash_image2.svg) |
+| Splash |
+|---|
+| ![Splash](https://github.com/user-attachments/assets/11c43967-6a5f-43b4-b08f-8c15e7b46952) |
 
 ### Auth (Login / Register / OTP / Success)
 
