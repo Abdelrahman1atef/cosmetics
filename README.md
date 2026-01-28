@@ -1,33 +1,104 @@
 # Cosmetics (Flutter)
+# 💄 Cosmetics
 
-## Screenshots
+**Cosmetics E-Commerce Mobile App (Flutter UI + API Integration)**
 
-> Images below are taken from this repo so they render automatically on GitHub.
+A modern cosmetics shopping application built with **Flutter**, featuring a complete **authentication flow**, **tab-based navigation**, and **checkout experience**.  
+The project demonstrates clean UI implementation, API integration, and scalable project structure suitable for real-world e-commerce apps.
 
-### Splash
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/23d9d2c8-a580-4b25-84f1-29260fe5b6a9" width="280"/>
+</p>
 
+---
+
+## ✨ Features
+
+### 🔐 Onboarding & Authentication
+- 3-step onboarding flow with skip / continue
+- User registration (name, email, phone, password)
+- Login using phone number and password
+- OTP verification (registration & forgot password)
+- Forgot password → OTP verification → reset password
+- Success dialogs and confirmations
+
+### 🏠 Home Experience
+- Bottom navigation tabs:
+  - Home
+  - Categories
+  - Cart
+  - Profile
+- Clean and responsive UI for all tabs
+
+### 🛒 Cart & Checkout
+- Cart items list with totals summary
+- Checkout screen with order overview
+- Prepared for payment flow integration
+
+### 🌐 Networking & Storage
+- REST API integration using **Dio**
+- Request/response logging with **PrettyDioLogger**
+- Authentication token persisted using **SharedPreferences**
+
+---
+
+## 📱 Screenshots
+
+### 🚀 Splash
 | Splash |
-|---|
-| ![Splash](https://github.com/user-attachments/assets/11c43967-6a5f-43b4-b08f-8c15e7b46952) |
+| --- |
+| <img src="https://github.com/user-attachments/assets/11c43967-6a5f-43b4-b08f-8c15e7b46952" width="160"/> |
 
-### Auth (Login / Register / OTP / Success)
+---
 
-| Login | Register | OTP Verify | Success dialog |
-|---|---|---|---|
-| ![Login](https://github.com/user-attachments/assets/1b3f96a8-b9e1-4f74-8aca-419bdecaa317) | ![Register](https://github.com/user-attachments/assets/5820ff50-a789-4b69-b9b3-fe7387d2e9d4) | ![OTP verify](https://github.com/user-attachments/assets/086dc57a-17a8-429d-b590-16ca08a038e2) | ![Success dialog](https://github.com/user-attachments/assets/4a0916e4-4434-4005-8d62-faf522b1b176) |
+### 🔐 Authentication Flow
+| Login | Register | OTP Verify | Success |
+| --- | --- | --- | --- |
+| <img src="https://github.com/user-attachments/assets/1b3f96a8-b9e1-4f74-8aca-419bdecaa317" width="160"/> | <img src="https://github.com/user-attachments/assets/5820ff50-a789-4b69-b9b3-fe7387d2e9d4" width="160"/> | <img src="https://github.com/user-attachments/assets/086dc57a-17a8-429d-b590-16ca08a038e2" width="160"/> | <img src="https://github.com/user-attachments/assets/4a0916e4-4434-4005-8d62-faf522b1b176" width="160"/> |
 
-### Home (Tabs) + Checkout
+---
 
+### 🏠 Home & Checkout
 | Home | Categories | Cart | Profile |
-|---|---|---|---|
-| ![Home](https://github.com/user-attachments/assets/23d9d2c8-a580-4b25-84f1-29260fe5b6a9) | ![Categories](https://github.com/user-attachments/assets/6328395e-5a1a-46ff-a67a-a985a3f3c5ee) | ![Cart](https://github.com/user-attachments/assets/37514c91-35bf-406c-92d7-095841c8a6b4) | ![Profile](https://github.com/user-attachments/assets/15c6940c-f588-41d0-adfb-cacca126e51a) |
+| --- | --- | --- | --- |
+| <img src="https://github.com/user-attachments/assets/23d9d2c8-a580-4b25-84f1-29260fe5b6a9" width="160"/> | <img src="https://github.com/user-attachments/assets/6328395e-5a1a-46ff-a67a-a985a3f3c5ee" width="160"/> | <img src="https://github.com/user-attachments/assets/37514c91-35bf-406c-92d7-095841c8a6b4" width="160"/> | <img src="https://github.com/user-attachments/assets/15c6940c-f588-41d0-adfb-cacca126e51a" width="160"/> |
 
 | Checkout |
-|---|
-| ![Checkout](https://github.com/user-attachments/assets/ae2fa961-15c8-4609-92a7-86b981038148) |
+| --- |
+| <img src="https://github.com/user-attachments/assets/ae2fa961-15c8-4609-92a7-86b981038148" width="160"/> |
 
-Mobile cosmetics e-commerce UI built with Flutter: onboarding + authentication (register/login/OTP) and a tabbed home experience (Home, Categories, Cart, Profile), with a checkout screen.
+---
 
+## 🧱 Project Structure
+
+```text
+lib/
+├── core/
+│   ├── logic/        # Navigation helpers & snackbars
+│   ├── network/      # Dio setup & API configuration
+│   ├── widgets/      # Reusable UI components
+│
+├── features/
+│   └── auth/         # Authentication models
+│
+├── views/
+│   ├── splash.dart
+│   ├── on_boarding.dart
+│   ├── login.dart
+│   ├── register.dart
+│   ├── verify_code.dart
+│   ├── forget_password.dart
+│   ├── create_password.dart
+│   ├── check_out.dart
+│   └── home/
+│       ├── view.dart
+│       └── pages/    # Home, Categories, Cart, Profile
+│
+assets/
+├── images/
+├── icons/
+└── fonts/
+```
 ## Features
 
 - **Onboarding flow**: 3-step onboarding with skip / continue
@@ -100,34 +171,6 @@ The app is configured to talk to a backend API.
 ### Auth token storage
 
 - After login, the token is stored in `SharedPreferences` under the key `token`.
-
-## Project Structure (high level)
-
-```text
-lib/
-  core/
-    logic/          # navigation helpers + snackbars
-    network/        # Dio + API configuration
-    widgets/        # reusable UI widgets
-  features/
-    auth/           # auth models (register)
-  views/
-    splash.dart
-    on_boarding.dart
-    login.dart
-    register.dart
-    verify_code.dart
-    forget_password.dart
-    create_password.dart
-    check_out.dart
-    home/
-      view.dart     # bottom tabs
-      pages/        # home, categories, cart, profile
-assets/
-  images/
-  icons/
-  fonts/
-```
 
 ## Code Generation (Freezed / JSON)
 
