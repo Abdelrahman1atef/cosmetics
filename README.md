@@ -2,15 +2,37 @@
 
 ## Screenshots
 
-> Images below are taken from this repo (`assets/images/`) so they render automatically on GitHub.
+> Images below are taken from this repo so they render automatically on GitHub.
+
+### Splash
+
+| App icon | Splash illustration |
+|---|---|
+| ![App icon](assets/icons/app_icon.svg) | ![Splash](assets/icons/splash_image2.svg) |
+
+### Auth (Login / Register / OTP / Success)
+
+| Login | Register | OTP Verify | Success dialog |
+|---|---|---|---|
+| ![Login](assets/images/login.png) | ![Register](docs/screenshots/auth_register.png) | ![OTP verify](docs/screenshots/auth_otp.png) | ![Success dialog](docs/screenshots/auth_success.png) |
+
+### Home (Tabs) + Checkout
+
+| Home | Categories | Cart | Profile |
+|---|---|---|---|
+| ![Home](docs/screenshots/home_tab_home.png) | ![Categories](docs/screenshots/home_tab_categories.png) | ![Cart](docs/screenshots/home_tab_cart.png) | ![Profile](docs/screenshots/home_tab_profile.png) |
+
+| Checkout |
+|---|
+| ![Checkout](docs/screenshots/checkout.png) |
+
+### Onboarding
 
 | Onboarding 1 | Onboarding 2 | Onboarding 3 |
 |---|---|---|
 | ![Onboarding 1](assets/images/on_boarding1.png) | ![Onboarding 2](assets/images/on_boarding2.png) | ![Onboarding 3](assets/images/on_boarding3.png) |
 
-| Login |
-|---|
-| ![Login](assets/images/login.png) |
+> Note: the `docs/screenshots/*.png` files are placeholders. Add real screenshots with the same filenames to make them appear here.
 
 Mobile cosmetics e-commerce UI built with Flutter: onboarding + authentication (register/login/OTP) and a tabbed home experience (Home, Categories, Cart, Profile), with a checkout screen.
 
