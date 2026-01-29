@@ -9,6 +9,7 @@ class AppImage extends StatelessWidget {
     this.height,
     this.width,
     this.svgColorFilter,
+    this.errorBuilder,
   });
 
   final String image;
@@ -18,20 +19,15 @@ class AppImage extends StatelessWidget {
 
   final double? width;
   final ColorFilter? svgColorFilter;
+  final ImageErrorWidgetBuilder? errorBuilder;
 
   Widget showImage(String image) {
-    if (image.toLowerCase().startsWith("http") ||
-        image.toLowerCase().startsWith("https")) {
-      return Image.network(image, fit: fit, height: height, width: width);
+    if (image.toLowerCase().startsWith("http") || image.toLowerCase().startsWith("https")) {
+      return Image.network(image, fit: fit, height: height, width: width, errorBuilder: errorBuilder);
     } else if (image.toLowerCase().endsWith(".jpg") ||
         image.toLowerCase().endsWith(".jpeg") ||
         image.toLowerCase().endsWith(".png")) {
-      return Image.asset(
-        "assets/images/$image",
-        fit: fit,
-        height: height,
-        width: width,
-      );
+      return Image.asset("assets/images/$image", fit: fit, height: height, width: width);
     } else if (image.toLowerCase().endsWith(".svg")) {
       return SvgPicture.asset(
         "assets/icons/$image",

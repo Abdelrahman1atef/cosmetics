@@ -1,12 +1,10 @@
-// ignore_for_file: inference_failure_on_instance_creation
-
+import 'package:cosmetics/core/logic/cash_helper.dart';
 import 'package:cosmetics/core/widgets/app_button.dart';
 import 'package:cosmetics/core/widgets/app_drop_menu.dart';
+import 'package:cosmetics/features/auth/login_model.dart';
 import 'package:cosmetics/views/forget_password.dart';
 import 'package:cosmetics/views/register.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../core/logic/helper_method.dart';
 import '../core/network/dio_helper.dart';
 import '../core/widgets/app_image.dart';
@@ -23,15 +21,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _key = GlobalKey<FormState>();
   final _countryCodeController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _countryCodeController.text = "+20";
-    super.initState();
-  }
+  final _phoneController = TextEditingController(text: "01022322745");
+  final _passwordController = TextEditingController(text: "123456");
 
   @override
   void dispose() {
@@ -40,24 +31,38 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  void _req(BuildContext context,Map<String,dynamic> data)async {
-    final response = await DioHelper.postData(endpoint: "api/Auth/login", data: data);
+  VoidCallback? _onPressed() {
+    if (_key.currentState!.validate()) {
+      final data = LoginReqModel(
+        countryCode: _countryCodeController.text,
+        phoneNumber: _phoneController.text,
+        password: _passwordController.text,
+      );
 
-    showDialog<void>(
-      context: context,
-      builder: (context) => const Center(child: CircularProgressIndicator()),
-    );
-    if (!response.isSuccess) {
+      _req(navKey.currentContext!, data.toJson());
+    }
+    return null;
+  }
+
+  void _req(BuildContext context, Map<String, dynamic> data) async {
+    final response = await DioHelper.postData(endpoint: "api/Auth/login", data: data);
+    if (context.mounted) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+      if (!response.isSuccess) {
+        Navigator.pop(context);
+        final msg = response.data['message'];
+        showMsg(msg);
+        return;
+      }
       Navigator.pop(context);
-      final msg = response.data['message'];
-      showMsg(msg);
-      return;
+      final LoginResModel loginResModel = LoginResModel.fromJson(response.data);
+      await CashHelper.setUserDate(loginResModel);
+      goto(const HomeView(), canPop: false);
     }
-    Navigator.pop(context);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("token", response.data["token"]);
-    goto(const HomeView(),canPop: false);
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +94,15 @@ class _LoginViewState extends State<LoginView> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ///Todo add validator
-                      const AppDropMenu(),
-                      const SizedBox(width: 6),
+                      AppDropMenu(
+                        value: _countryCodeController.text,
+                        onChanged: (value) {
+                          setState(() {
+                            _countryCodeController.text = value!;
+
+                          });
+                        },
+                      ),
                       Expanded(
                         child: AppInput(
                           controller: _phoneController,
@@ -127,30 +138,16 @@ class _LoginViewState extends State<LoginView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 InkWell(
-                  ///Todo add Forget password screen nav
-                  onTap: () =>
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgetPasswordView())),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(builder: (context) => const ForgetPasswordView()),
+                  ),
                   child: Text("Forget Password?", style: TextTheme.of(context).labelMedium),
                 ),
               ],
             ),
             const SizedBox(height: 40),
-            AppButton(
-              isChildIcon: false,
-              onPressed: () async {
-                if (_key.currentState!.validate()) {
-                  final data = {
-                    "countryCode": _countryCodeController.text,
-                    "phoneNumber": _phoneController.text,
-                    "password": _passwordController.text,
-                  };
-                  if (context.mounted) {
-                    _req(context,data);
-                  }
-                }
-              },
-              text: "Login",
-            ),
+            AppButton(isChildIcon: false, onPressed: _onPressed, text: "Login"),
           ],
         ),
       ),
@@ -158,7 +155,7 @@ class _LoginViewState extends State<LoginView> {
         padding: const EdgeInsetsGeometry.symmetric(vertical: 20),
         child: GestureDetector(
           onTap: () =>
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RegisterView())),
+              Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const RegisterView())),
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(

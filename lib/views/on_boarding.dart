@@ -4,6 +4,7 @@ import 'package:cosmetics/core/widgets/app_button.dart';
 import 'package:cosmetics/views/login.dart';
 import 'package:flutter/material.dart';
 
+import '../core/logic/cash_helper.dart';
 import '../core/widgets/app_image.dart';
 
 final pages = [
@@ -77,8 +78,12 @@ class _SplashScreenState extends State<OnBoardingView> {
                 Align(
                   alignment: AlignmentGeometry.centerRight,
                   child: TextButton(
-                    onPressed: () =>
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView())),
+                    onPressed: () async {
+                      await CashHelper.setFirstTime();
+                      if (context.mounted) {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView()));
+                      }
+                    },
                     child: currentPage == 2
                         ? const SizedBox.shrink()
                         : Text("Skip", style: Theme.of(context).textTheme.displayMedium),
@@ -112,21 +117,23 @@ class _SplashScreenState extends State<OnBoardingView> {
                   ],
                 ),
                 AppButton(
-                  onPressed: () {
-                    setState(() {
-                      currentPage != 2
-                          ? controller.jumpToPage(++currentPage)
-                          : Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => const LoginView()),
-                            );
-                    });
+                  onPressed: () async {
+                    if (currentPage != 2) {
+                      setState(() {
+                        controller.jumpToPage(++currentPage);
+                      });
+                      return;
+                    }
+                    CashHelper.setFirstTime();
+                    if (context.mounted) {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView()));
+                    }
                   },
-                  fit:  currentPage != 2?FlexFit.loose:FlexFit.tight,
+                  fit: currentPage != 2 ? FlexFit.loose : FlexFit.tight,
                   padding: const EdgeInsetsDirectional.symmetric(vertical: 21),
                   margin: const EdgeInsetsDirectional.symmetric(horizontal: 30),
                   color: ColorScheme.of(context).secondary,
-                  borderRadius: currentPage != 2?8:60,
+                  borderRadius: currentPage != 2 ? 8 : 60,
                   widget: currentPage != 2
                       ? const AppImage(image: "arrow.svg")
                       : Text("let’s start!", style: TextTheme.of(context).bodyMedium),

@@ -7,6 +7,7 @@ import '../core/widgets/app_image.dart';
 import '../core/widgets/app_button.dart';
 import '../core/widgets/app_drop_menu.dart';
 import '../core/widgets/app_input.dart';
+import 'login.dart';
 
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});
@@ -19,12 +20,16 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   final _key = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _countryCodeController = TextEditingController();
+  late List<CountryCodeModel> _countries;
+  DataStates _state = DataStates.uninitialized;
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
     _countryCodeController.text = "+20";
   }
+
+
 
   void _req(BuildContext context, dynamic data) async {
     final response = await DioHelper.postData(endpoint: "api/Auth/forgot-password", data: data);
@@ -40,11 +45,9 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       return;
     }
     Navigator.pop(context);
-    goto(VerifyCodeView(
-      isRegister: false,
-      countryCode: _countryCodeController.text,
-      phoneNumber: _phoneController.text,
-    ));
+    goto(
+      VerifyCodeView(isRegister: false, countryCode: _countryCodeController.text, phoneNumber: _phoneController.text),
+    );
   }
 
   @override
@@ -79,16 +82,9 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ///Todo style dropdown menu
-                      ///Todo add validator
-                      AppDropMenu(
-                        onChanged: (value) => setState(() {
-                          _countryCodeController.text = value ?? "+20";
-                        }),
-                      ),
+                      const AppDropMenu(),
                       const SizedBox(width: 6),
                       Expanded(
-                        ///Todo add validator
                         child: AppInput(
                           controller: _phoneController,
                           labelText: "Phone Number",
@@ -107,7 +103,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
             ),
             const SizedBox(height: 60),
             AppButton(
-              onPressed: ()  {
+              onPressed: () {
                 if (_key.currentState!.validate()) {
                   final data = {"countryCode": _countryCodeController.text, "phoneNumber": _phoneController.text};
                   if (context.mounted) {

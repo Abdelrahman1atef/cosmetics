@@ -1,18 +1,21 @@
-// ignore_for_file: inference_failure_on_instance_creation
 import 'package:cosmetics/core/logic/helper_method.dart';
+import 'package:cosmetics/views/home/view.dart';
 import 'package:cosmetics/views/login.dart';
 import 'package:cosmetics/views/verify_code.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import '../core/logic/cash_helper.dart';
 import '../core/network/dio_helper.dart';
 import '../core/widgets/app_image.dart';
 import '../core/widgets/app_button.dart';
 import '../core/widgets/app_drop_menu.dart';
 import '../core/widgets/app_input.dart';
-import '../features/auth/register/model.dart';
+import '../features/auth/login_model.dart';
+import '../features/auth/register_model.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+  const RegisterView({super.key, this.isProfileUpdate = false});
+
+  final bool isProfileUpdate;
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -38,9 +41,25 @@ class _RegisterViewState extends State<RegisterView> {
     super.dispose();
   }
 
-  void _req(BuildContext context, RegisterRequestModel data) async {
-    final response = await DioHelper.postData(endpoint: "api/Auth/register", data: data.toJson());
+  @override
+  void initState() {
+    if (widget.isProfileUpdate) {
+      final user = CashHelper.getUserData();
+      _nameController.text = user!.username;
+      _emailController.text = user.email;
+      _phoneController.text = user.phoneNumber;
+    }
+    super.initState();
+  }
 
+  void _req(BuildContext context, RegisterRequestModel data) async {
+    final CustomResponse response;
+    if (widget.isProfileUpdate) {
+      response = await DioHelper.putData(endpoint: "api/Auth/profile", data: data.toJson());
+    } else {
+      response = await DioHelper.postData(endpoint: "api/Auth/register", data: data.toJson());
+    }
+    if (!context.mounted) return;
     showDialog<void>(
       context: context,
       builder: (context) => const Center(child: CircularProgressIndicator()),
@@ -52,19 +71,31 @@ class _RegisterViewState extends State<RegisterView> {
       return;
     }
     Navigator.pop(context);
-    goto(
-      VerifyCodeView(isRegister: true, phoneNumber: _phoneController.text, countryCode: _countryCodeController.text),
-    );
+    if (widget.isProfileUpdate) {
+      await CashHelper.setData("username", _nameController.text);
+      await CashHelper.setData("email", _emailController.text);
+      await CashHelper.setData("phoneNumber", _phoneController.text);
+      await CashHelper.setData("countryCode", _countryCodeController.text);
+      showMsg(response.msg);
+      goto(const HomeView(), canPop: false);
+    } else {
+      goto(
+        VerifyCodeView(isRegister: true, phoneNumber: _phoneController.text, countryCode: _countryCodeController.text),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final title = widget.isProfileUpdate ? "Update Profile" : "Create Account";
+    final btnText = widget.isProfileUpdate ? "Done" : "Next";
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomNavigationBar: Padding(
         padding: const EdgeInsetsGeometry.symmetric(vertical: 20),
         child: GestureDetector(
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView())),
+          onTap: () =>
+              Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const LoginView())),
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
@@ -96,7 +127,7 @@ class _RegisterViewState extends State<RegisterView> {
           children: [
             const AppImage(image: "app_icon.svg", width: 100),
             const SizedBox(height: 40),
-            Text("Create Account", style: TextTheme.of(context).titleLarge),
+            Text(title, style: TextTheme.of(context).titleLarge),
             const SizedBox(height: 80),
             Form(
               key: _key,
@@ -130,10 +161,12 @@ class _RegisterViewState extends State<RegisterView> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ///Todo add validator to DropdownMenu
                       AppDropMenu(
+                        value: _countryCodeController.text,
                         onChanged: (value) {
-                          _countryCodeController.text = value!;
+                          setState(() {
+                            _countryCodeController.text = value!;
+                          });
                         },
                       ),
                       const SizedBox(width: 6),
@@ -158,36 +191,37 @@ class _RegisterViewState extends State<RegisterView> {
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  AppInput(
-                    controller: _passwordController,
-                    labelText: "Create your password",
-                    isPasswordField: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      if (value.length < 5) {
-                        return 'Please enter a valid password more than 5 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  AppInput(
-                    controller: _confirmPasswordController,
-                    labelText: "Confirm password",
-                    isPasswordField: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
-                      }
-                      if (value != _passwordController.text) {
-                        return 'Passwords do not match';
-                      }
-                      return null;
-                    },
-                  ),
+                  if (!widget.isProfileUpdate) ...[
+                    AppInput(
+                      controller: _passwordController,
+                      labelText: "Create your password",
+                      isPasswordField: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        if (value.length < 5) {
+                          return 'Please enter a valid password more than 5 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    AppInput(
+                      controller: _confirmPasswordController,
+                      labelText: "Confirm password",
+                      isPasswordField: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please confirm your password';
+                        }
+                        if (value != _passwordController.text) {
+                          return 'Passwords do not match';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -206,7 +240,7 @@ class _RegisterViewState extends State<RegisterView> {
                   _req(context, data);
                 }
               },
-              text: "Next",
+              text: btnText,
             ),
           ],
         ),

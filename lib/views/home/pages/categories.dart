@@ -39,7 +39,7 @@ class CategoriesPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const AppImage(image: "arrow-right.svg"),
+                const AppImage(image: "arrow_right.svg"),
               ],
             ),
           );

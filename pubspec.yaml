@@ -41,6 +41,7 @@ dependencies:
   dio:
   pretty_dio_logger:
   shared_preferences:
+  shimmer:
   device_preview: any
 dev_dependencies:
   flutter_test:

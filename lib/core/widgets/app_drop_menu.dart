@@ -1,35 +1,88 @@
 import 'package:flutter/material.dart';
 
+import '../network/dio_helper.dart';
 
-class AppDropMenu extends StatelessWidget {
-  const AppDropMenu({super.key,  this.onChanged});
+class CountryCodeModel {
+  late int id;
+  late String code;
+  late String name;
+
+  CountryCodeModel.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    code = json["code"];
+    name = json["name"];
+  }
+}
+
+class AppDropMenu extends StatefulWidget {
+  const AppDropMenu({super.key, this.onChanged, this.value});
+
   final ValueChanged<String?>? onChanged;
+  final String? value;
+
+  @override
+  State<AppDropMenu> createState() => _AppDropMenuState();
+}
+
+class _AppDropMenuState extends State<AppDropMenu> {
+  late List<CountryCodeModel> _countries;
+  DataStates _state = DataStates.uninitialized;
+
+  @override
+  void initState() {
+    _getCountryCode();
+    super.initState();
+  }
+
+  Future<void> _getCountryCode() async {
+    _state = DataStates.loading;
+    setState(() {});
+    final response = await DioHelper.getData("api/Countries");
+    if (response.isSuccess) {
+      _state = DataStates.loaded;
+      _countries = (response.data as List).map((e) => CountryCodeModel.fromJson(e)).toList();
+      widget.onChanged?.call(_countries.first.code);
+    } else {
+      _state = DataStates.error;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = theme.colorScheme;
     return Container(
-      padding: const EdgeInsetsGeometry.symmetric(horizontal: 20,vertical: 3),
+      margin: const EdgeInsetsDirectional.only(end: 6),
       decoration: BoxDecoration(
-        border: Border.all(width: 2,
-            color: Theme.of(context).hintColor),
-        borderRadius: BorderRadius.circular(13)
-      ),
-      child: DropdownButton(
-
-        onChanged: onChanged,
-        value: "+20",
+        border: Border.all(width: 2, color: Theme.of(context).hintColor),
         borderRadius: BorderRadius.circular(13),
-        elevation: 0,
-        icon: const Icon(Icons.keyboard_arrow_down_rounded),
-
-        style: TextTheme.of(context).titleMedium?.copyWith(
-          fontSize: 18,
-          color: ColorScheme.of(context).secondary,
-        ),
-        items: const [
-          DropdownMenuItem(value: "+20", child: Text('+20')),
-          DropdownMenuItem(value: "+21", child: Text('+21')),
-        ],
       ),
+      child: _state == DataStates.uninitialized || _state == DataStates.loading
+          ? const CircularProgressIndicator(padding: EdgeInsetsGeometry.symmetric(horizontal: 20, vertical: 10))
+          : _state == DataStates.error
+          ? IconButton(
+              onPressed: () => _getCountryCode(),
+              icon: Icon(Icons.refresh, size: 35, color: color.primary),
+              padding: const EdgeInsetsGeometry.symmetric(horizontal: 20, vertical: 10),
+            )
+          : DropdownButton(
+              padding: const EdgeInsetsGeometry.symmetric(horizontal: 20, vertical: 3),
+              icon: const Icon(Icons.keyboard_arrow_down_rounded),
+              borderRadius: BorderRadius.circular(13),
+              dropdownColor: color.primary.withValues(alpha: 0.95),
+              onChanged: widget.onChanged,
+              value: widget.value,
+              style: theme.textTheme.titleMedium?.copyWith(fontSize: 18, color: theme.scaffoldBackgroundColor),
+              items: _countries
+                  .map(
+                    (item) => DropdownMenuItem<String>(
+                      value: item.code,
+                      child: Text(item.code, style: theme.textTheme.displayMedium),
+                    ),
+                  )
+                  .toList(),
+            ),
     );
   }
 }

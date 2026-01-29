@@ -1,11 +1,14 @@
+import 'package:cosmetics/core/logic/cash_helper.dart';
+import 'package:cosmetics/views/login.dart';
 import 'package:cosmetics/views/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 
 import 'core/logic/helper_method.dart';
 
-
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await  CashHelper.init();
   runApp(DevicePreview(enabled: false, builder: (context) => const AvonApp()));
 }
 

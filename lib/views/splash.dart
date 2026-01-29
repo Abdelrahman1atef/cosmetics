@@ -1,7 +1,12 @@
+import 'package:cosmetics/core/logic/cash_helper.dart';
 import 'package:cosmetics/views/on_boarding.dart';
 import 'package:flutter/material.dart';
 
+import '../core/logic/helper_method.dart';
+import '../core/network/dio_helper.dart';
 import '../core/widgets/app_Image.dart';
+import 'home/view.dart';
+import 'login.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -11,14 +16,31 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+
+  Future<void> _req() async {
+    final response = await DioHelper.getData("api/Auth/profile");
+    if (!mounted) return;
+    if(response.isSuccess) {
+      goto(const HomeView(), canPop: false);
+      return;
+    }
+    goto(const LoginView(), canPop: false);
+  }
+  Future<void> _handleStartup() async {
+    final isFirstTime = CashHelper.getFirstTime()?? true;
+    if (isFirstTime) {
+      await Future<void>.delayed(const Duration(seconds: 3));
+      if (!mounted) return;
+      goto(const OnBoardingView(), canPop: false);
+    } else {
+      await _req();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const OnBoardingView()));
-      }
-    });
+    _handleStartup();
   }
 
   @override
@@ -37,4 +59,5 @@ class _SplashViewState extends State<SplashView> {
       ),
     );
   }
+
 }
