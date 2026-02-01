@@ -20,9 +20,9 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _key = GlobalKey<FormState>();
-  final _countryCodeController = TextEditingController();
-  final _phoneController = TextEditingController(text: "01022322745");
-  final _passwordController = TextEditingController(text: "123456");
+  var _selectedCountryCode = CountryCodeModel();
+  final _phoneController = TextEditingController(text: "01022322742");
+  final _passwordController = TextEditingController(text: "12345678");
 
   @override
   void dispose() {
@@ -34,7 +34,7 @@ class _LoginViewState extends State<LoginView> {
   VoidCallback? _onPressed() {
     if (_key.currentState!.validate()) {
       final data = LoginReqModel(
-        countryCode: _countryCodeController.text,
+        countryCode: _selectedCountryCode.code,
         phoneNumber: _phoneController.text,
         password: _passwordController.text,
       );
@@ -95,11 +95,10 @@ class _LoginViewState extends State<LoginView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppDropMenu(
-                        value: _countryCodeController.text,
+                        value: _selectedCountryCode,
                         onChanged: (value) {
                           setState(() {
-                            _countryCodeController.text = value!;
-
+                            _selectedCountryCode = value as CountryCodeModel ;
                           });
                         },
                       ),
@@ -110,6 +109,23 @@ class _LoginViewState extends State<LoginView> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your phone number';
+                            }
+                            switch (_selectedCountryCode.code) {
+                              case "+20":
+                                if (value.length <= 10) {
+                                  return 'Phone number of ${_selectedCountryCode.name} more than 10 digits';
+                                }
+                                if (value.length > 11) {
+                                  return 'Phone number of ${_selectedCountryCode.name} less than 11 digits';
+                                }
+                                break;
+                              default:
+                                if (value.length <= 9) {
+                                  return 'Phone number of ${_selectedCountryCode.name} more than 9 digits';
+                                }
+                                if (value.length > 10) {
+                                  return "Phone number of ${_selectedCountryCode.name} less than 10 digits";
+                                }
                             }
                             return null;
                           },
@@ -126,6 +142,9 @@ class _LoginViewState extends State<LoginView> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
+                      }
+                      if (value.length < 8) {
+                        return 'Password must be at least 8 characters long.';
                       }
                       return null;
                     },

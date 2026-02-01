@@ -7,7 +7,6 @@ import '../core/widgets/app_image.dart';
 import '../core/widgets/app_button.dart';
 import '../core/widgets/app_drop_menu.dart';
 import '../core/widgets/app_input.dart';
-import 'login.dart';
 
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});
@@ -21,7 +20,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   final _phoneController = TextEditingController();
   final _countryCodeController = TextEditingController();
   late List<CountryCodeModel> _countries;
-  DataStates _state = DataStates.uninitialized;
+  final DataStates _state = DataStates.uninitialized;
 
   @override
   void initState()  {
@@ -33,6 +32,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   void _req(BuildContext context, dynamic data) async {
     final response = await DioHelper.postData(endpoint: "api/Auth/forgot-password", data: data);
+    if (!context.mounted) return;
 
     showDialog<void>(
       context: context,

@@ -48,46 +48,56 @@ class _ProfilePageState extends State<ProfilePage> {
             left: 0,
             right: 0,
             top: 120,
-            child: Column(
-              children: [
-                 AppImage(image: user.profilePhotoUrl, width: 120,height: 120,),
-                const SizedBox(height: 20),
-                Text(user.username, style: Theme.of(context).textTheme.displayMedium),
-                const SizedBox(height: 20),
-                Column(
-                  children: profileActions
-                      .map(
-                        (action) => InkWell(
-                          onTap: action.action ?? () {},
-                          borderRadius: BorderRadius.circular(12),
-                          child: Padding(
-                            padding: const EdgeInsetsGeometry.symmetric(horizontal: 20, vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    action.icon,
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      action.title,
-                                      style: action.hasArrow ?? false
-                                          ? Theme.of(context).textTheme.displayMedium
-                                          : Theme.of(context).textTheme.displayMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.error,
-                                            ),
-                                    ),
-                                  ],
-                                ),
-                                action.hasArrow ?? false ? const AppImage(image: "arrow_right.svg") : const SizedBox(),
-                              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(100),
+                    child: AppImage(
+                      image: user.profilePhotoUrl,
+                      width: 120,
+                      height: 120,
+                      errorBuilder: (context, error, stackTrace) => const Text("404"),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(user.username, style: Theme.of(context).textTheme.displayMedium),
+                  const SizedBox(height: 20),
+                  Column(
+                    children: profileActions
+                        .map(
+                          (action) => InkWell(
+                            onTap: action.action ?? () {},
+                            borderRadius: BorderRadius.circular(12),
+                            child: Padding(
+                              padding: const EdgeInsetsGeometry.symmetric(horizontal: 20, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      action.icon,
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        action.title,
+                                        style: action.hasArrow ?? false
+                                            ? Theme.of(context).textTheme.displayMedium
+                                            : Theme.of(context).textTheme.displayMedium?.copyWith(
+                                                color: Theme.of(context).colorScheme.error,
+                                              ),
+                                      ),
+                                    ],
+                                  ),
+                                  action.hasArrow ?? false ? const AppImage(image: "arrow_right.svg") : const SizedBox(),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
+                        )
+                        .toList(),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -100,8 +110,8 @@ final profileActions = [
   _ProfileAction(
     icon: const AppImage(image: "edit.svg"),
     title: "Edit Info",
-    action: ()  {
-      goto(const RegisterView(isProfileUpdate: true,), canPop: true);
+    action: () {
+      goto(const RegisterView(isProfileUpdate: true), canPop: true);
     },
   ),
   _ProfileAction(

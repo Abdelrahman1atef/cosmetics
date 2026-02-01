@@ -1,6 +1,4 @@
-import 'package:cosmetics/views/login.dart';
 import 'package:cosmetics/views/success_dialog.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../core/logic/helper_method.dart';
@@ -27,7 +25,7 @@ class _CreatePasswordViewState extends State<CreatePasswordView> {
   void _req(BuildContext context, Map<String,dynamic> data) async{
 
     final response = await DioHelper.postData(endpoint: "api/Auth/reset-password", data: data);
-
+    if (!context.mounted) return;
     showDialog<void>(
       context: context,
       builder: (context) => const Center(child: CircularProgressIndicator()),

@@ -7,6 +7,9 @@ class CountryCodeModel {
   late String code;
   late String name;
 
+  CountryCodeModel({this.id = 0, this.code = "", this.name = ""});
+
+
   CountryCodeModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     code = json["code"];
@@ -17,8 +20,8 @@ class CountryCodeModel {
 class AppDropMenu extends StatefulWidget {
   const AppDropMenu({super.key, this.onChanged, this.value});
 
-  final ValueChanged<String?>? onChanged;
-  final String? value;
+  final ValueChanged<Object?>? onChanged;
+  final CountryCodeModel? value;
 
   @override
   State<AppDropMenu> createState() => _AppDropMenuState();
@@ -41,7 +44,7 @@ class _AppDropMenuState extends State<AppDropMenu> {
     if (response.isSuccess) {
       _state = DataStates.loaded;
       _countries = (response.data as List).map((e) => CountryCodeModel.fromJson(e)).toList();
-      widget.onChanged?.call(_countries.first.code);
+      widget.onChanged?.call(_countries.first);
     } else {
       _state = DataStates.error;
     }
@@ -71,13 +74,13 @@ class _AppDropMenuState extends State<AppDropMenu> {
               icon: const Icon(Icons.keyboard_arrow_down_rounded),
               borderRadius: BorderRadius.circular(13),
               dropdownColor: color.primary.withValues(alpha: 0.95),
+              style: theme.textTheme.titleMedium?.copyWith(fontSize: 18, color: theme.scaffoldBackgroundColor),
               onChanged: widget.onChanged,
               value: widget.value,
-              style: theme.textTheme.titleMedium?.copyWith(fontSize: 18, color: theme.scaffoldBackgroundColor),
               items: _countries
                   .map(
-                    (item) => DropdownMenuItem<String>(
-                      value: item.code,
+                    (item) => DropdownMenuItem(
+                      value: item,
                       child: Text(item.code, style: theme.textTheme.displayMedium),
                     ),
                   )

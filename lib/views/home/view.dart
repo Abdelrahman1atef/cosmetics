@@ -20,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
     const CartPage(),
     const ProfilePage(),
   ];
-  int currentScreen = 0;
+  int currentScreen = 2;
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,6 @@ import '../core/widgets/app_image.dart';
 import '../core/widgets/app_button.dart';
 import '../core/widgets/app_drop_menu.dart';
 import '../core/widgets/app_input.dart';
-import '../features/auth/login_model.dart';
 import '../features/auth/register_model.dart';
 
 class RegisterView extends StatefulWidget {
@@ -25,7 +24,7 @@ class _RegisterViewState extends State<RegisterView> {
   final _key = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _countryCodeController = TextEditingController();
+  var _selectedCountryCode = CountryCodeModel();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -34,7 +33,6 @@ class _RegisterViewState extends State<RegisterView> {
   void dispose() {
     _nameController.dispose();
     _phoneController.dispose();
-    _countryCodeController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -75,12 +73,12 @@ class _RegisterViewState extends State<RegisterView> {
       await CashHelper.setData("username", _nameController.text);
       await CashHelper.setData("email", _emailController.text);
       await CashHelper.setData("phoneNumber", _phoneController.text);
-      await CashHelper.setData("countryCode", _countryCodeController.text);
+      await CashHelper.setData("countryCode", _selectedCountryCode.code);
       showMsg(response.msg);
       goto(const HomeView(), canPop: false);
     } else {
       goto(
-        VerifyCodeView(isRegister: true, phoneNumber: _phoneController.text, countryCode: _countryCodeController.text),
+        VerifyCodeView(isRegister: true, phoneNumber: _phoneController.text, countryCode: _selectedCountryCode.code),
       );
     }
   }
@@ -151,7 +149,8 @@ class _RegisterViewState extends State<RegisterView> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your Email';
                       }
-                      if (!value.contains('@')) {
+
+                      if (_validateEmail(value) == false) {
                         return 'Please enter a valid Email';
                       }
                       return null;
@@ -162,10 +161,10 @@ class _RegisterViewState extends State<RegisterView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppDropMenu(
-                        value: _countryCodeController.text,
+                        value: _selectedCountryCode,
                         onChanged: (value) {
                           setState(() {
-                            _countryCodeController.text = value!;
+                            _selectedCountryCode = value as CountryCodeModel;
                           });
                         },
                       ),
@@ -178,11 +177,23 @@ class _RegisterViewState extends State<RegisterView> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your phone number';
                             }
-                            if (value.length <= 10) {
-                              return 'Please enter a valid phone number more than 10 digits';
-                            }
-                            if (value.length > 11) {
-                              return 'Please enter a valid phone number less than 11 digits';
+                            switch (_selectedCountryCode.code) {
+                              case "+20":
+                                if (value.length <= 10) {
+                                  return 'Phone number of ${_selectedCountryCode.name} more than 10 digits';
+                                }
+                                if (value.length > 11) {
+                                  return 'Phone number of ${_selectedCountryCode.name} less than 11 digits';
+                                }
+                                break;
+
+                              default:
+                                if (value.length <= 9) {
+                                  return 'Phone number of ${_selectedCountryCode.name} more than 9 digits';
+                                }
+                                if (value.length > 10) {
+                                  return "Phone number of ${_selectedCountryCode.name} less than 10 digits";
+                                }
                             }
                             return null;
                           },
@@ -200,8 +211,8 @@ class _RegisterViewState extends State<RegisterView> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
                         }
-                        if (value.length < 5) {
-                          return 'Please enter a valid password more than 5 characters';
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long.';
                         }
                         return null;
                       },
@@ -232,7 +243,7 @@ class _RegisterViewState extends State<RegisterView> {
                 if (_key.currentState!.validate()) {
                   final RegisterRequestModel data = RegisterRequestModel(
                     username: _nameController.text,
-                    countryCode: _countryCodeController.text,
+                    countryCode: _selectedCountryCode.code,
                     phoneNumber: _phoneController.text,
                     email: _emailController.text,
                     password: _passwordController.text,
@@ -246,5 +257,11 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
+  }
+
+  bool _validateEmail(String value) {
+    return RegExp(
+      r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+    ).hasMatch(value);
   }
 }

@@ -1,65 +1,105 @@
 import 'package:cosmetics/core/widgets/app_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../../../core/logic/helper_method.dart';
+import '../../../core/network/dio_helper.dart';
 import '../../../core/widgets/my_app_bar.dart';
 
-class CategoriesPage extends StatelessWidget {
+class _CategoriesModel {
+  late final int id;
+  late final String title;
+  late final String imageUrl;
+
+  _CategoriesModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    imageUrl = json['imageUrl'];
+  }
+}
+
+class CategoriesPage extends StatefulWidget {
   const CategoriesPage({super.key});
+
+  @override
+  State<CategoriesPage> createState() => _CategoriesPageState();
+}
+
+class _CategoriesPageState extends State<CategoriesPage> {
+  late List<_CategoriesModel> _categories;
+  DataStates _categoriesStates = DataStates.uninitialized;
+
+  Future<void> _productsReq() async {
+    _categoriesStates = DataStates.loading;
+    setState(() {});
+    final response = await DioHelper.getData("api/Categories");
+    if (response.isSuccess) {
+    _categoriesStates = DataStates.loaded;
+      _categories = (response.data as List).map((e) => _CategoriesModel.fromJson(e)).toList();
+    } else {
+      _categoriesStates = DataStates.error;
+      showMsg(response.msg);
+      _categories = [];
+    }
+     setState(() {});
+  }
+
+  @override
+  void initState() {
+    _productsReq();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const MyAppBar(
-        haveSearchBar: true,
-        haveTitle: true,
-        title: "Categories",
-      ),
+      appBar: const MyAppBar(haveSearchBar: true, haveTitle: true, title: "Categories"),
       body: ListView.separated(
         separatorBuilder: (context, index) => const Divider(),
         padding: const EdgeInsetsGeometry.symmetric(horizontal: 20, vertical: 10),
-        itemCount: categories.length,
+        itemCount: _categoriesStates != DataStates.loaded ? 8 : _categories.length,
         itemBuilder: (context, index) {
-          final category = categories[index];
-          return Padding(
-            padding: const EdgeInsetsGeometry.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    ClipRRect(
+          late _CategoriesModel category;
+          if (_categoriesStates == DataStates.loaded) {
+           category = _categories[index];
+          }
+          if (_categoriesStates == DataStates.loading) {
+            return Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child:  Container(
+                height: 110,
+                color: Colors.grey.shade300,),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsetsGeometry.symmetric(vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-
-                        child: AppImage(image: category.image,fit: BoxFit.cover,width: 80,)),
-                    const SizedBox(width: 20),
-                    Text(
-                      category.title,
-                      style: Theme.of(context).textTheme.displayMedium,
-                    ),
-                  ],
-                ),
-                const AppImage(image: "arrow_right.svg"),
-              ],
-            ),
-          );
+                        child: AppImage(
+                          image: category.imageUrl,
+                          fit: BoxFit.cover,
+                          width: 80,
+                          errorBuilder: (context, error, stackTrace) => const AppImage(image: "cat_bundles.png"),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Text(category.title, style: Theme.of(context).textTheme.displayMedium),
+                    ],
+                  ),
+                  const AppImage(image: "arrow_right.svg"),
+                ],
+              ),
+            );
+          }
         },
       ),
     );
   }
-}
-
-final categories = [
-  _CategoryItem(title: "Bundles", image: "cat_bundles.png"),
-  _CategoryItem(title: "Perfumes", image: "cat_perfumes.png"),
-  _CategoryItem(title: "Makeup", image: "cat_makeup.png"),
-  _CategoryItem(title: "Skin Care", image: "cat_skin_care.png"),
-  _CategoryItem(title: "Gifts", image: "cat_gifts.jpg"),
-];
-
-class _CategoryItem {
-  final String title;
-  final String image;
-
-  _CategoryItem({required this.title, required this.image});
 }

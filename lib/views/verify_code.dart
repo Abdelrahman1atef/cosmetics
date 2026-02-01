@@ -1,9 +1,6 @@
-// ignore_for_file: inference_failure_on_instance_creation
-
 import 'package:cosmetics/core/logic/helper_method.dart';
 import 'package:cosmetics/core/widgets/app_button.dart';
 import 'package:cosmetics/views/success_dialog.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -11,17 +8,38 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../core/network/dio_helper.dart';
 import '../core/widgets/app_image.dart';
 import 'create_password.dart';
-import 'login.dart';
 
-class VerifyCodeView extends StatelessWidget {
+class VerifyCodeView extends StatefulWidget {
   const VerifyCodeView({super.key, required this.isRegister, required this.phoneNumber, required this.countryCode});
 
   final bool isRegister;
   final String countryCode;
   final String phoneNumber;
 
+  @override
+  State<VerifyCodeView> createState() => _VerifyCodeViewState();
+}
+
+class _VerifyCodeViewState extends State<VerifyCodeView> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  String get formatedPhoneNumber {
+    if (widget.phoneNumber.startsWith("0")) {
+      return widget.phoneNumber.substring(1);
+    }
+    return widget.phoneNumber;
+  }
+
   void _req(BuildContext context, Map<String, dynamic> data) async {
     final response = await DioHelper.postData(endpoint: "api/Auth/verify-otp", data: data);
+
+    if (!context.mounted) return;
 
     showDialog<void>(
       context: context,
@@ -34,12 +52,15 @@ class VerifyCodeView extends StatelessWidget {
       return;
     }
     Navigator.pop(context);
-    isRegister
+    widget.isRegister
         ? showDialog<void>(
+            barrierDismissible: false,
             context: context,
-            builder: (context) => SuccessDialog(isRegister: isRegister),
+            builder: (context) => PopScope(
+                canPop: false,
+                child: SuccessDialog(isRegister: widget.isRegister)),
           )
-        : goto(CreatePasswordView(countryCode: countryCode, phoneNumber: phoneNumber));
+        : goto(CreatePasswordView(countryCode: widget.countryCode, phoneNumber: widget.phoneNumber));
   }
 
   @override
@@ -70,7 +91,10 @@ class VerifyCodeView extends StatelessWidget {
                       text: "We just sent a 4-digit verification code to\n",
                       style: TextTheme.of(context).titleMedium,
                     ),
-                    TextSpan(text: phoneNumber, style: TextTheme.of(context).displayMedium),
+                    TextSpan(
+                      text: "${widget.countryCode} $formatedPhoneNumber",
+                      style: TextTheme.of(context).displayMedium,
+                    ),
                     TextSpan(
                       text: ". Enter the code in the box below to continue.",
                       style: TextTheme.of(context).titleMedium,
@@ -91,6 +115,7 @@ class VerifyCodeView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsetsGeometry.symmetric(horizontal: 60),
                 child: PinCodeTextField(
+                  controller: _controller,
                   appContext: context,
                   length: 4,
                   textStyle: TextTheme.of(context).displayMedium?.copyWith(fontSize: 20, fontWeight: FontWeight.w900),
@@ -143,7 +168,11 @@ class VerifyCodeView extends StatelessWidget {
               const SizedBox(height: 50),
               AppButton(
                 onPressed: () async {
-                  final data = {"countryCode": countryCode, "phoneNumber": phoneNumber, "otpCode": "1111"};
+                  final data = {
+                    "countryCode": widget.countryCode,
+                    "phoneNumber": widget.phoneNumber,
+                    "otpCode": _controller.text,
+                  };
                   if (context.mounted) {
                     _req(context, data);
                   }

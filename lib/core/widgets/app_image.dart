@@ -48,7 +48,12 @@ class AppImage extends StatelessWidget {
     //   return Image.asset(image, fit: fit) ;
     // }
     else {
-      return const Placeholder();
+      return AppImage(
+        image: "https://media.istockphoto.com/id/1399588872/vector/corrupted-pixel-file-icon-damage-document-symbol-sign-broken-data-vector.jpg?s=612x612&w=0&k=20&c=ffG6gVLUPfxZkTwjeqdxD67LWd8R1pQTIyIVUi-Igx0=",
+        width: 120,
+        height: 120,
+        errorBuilder: (context, error, stackTrace) => const Text("404"),
+      );
     }
   }
 

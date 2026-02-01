@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/logic/helper_method.dart';
-import '../../../core/widgets/app_image.dart';
+import '../../../core/widgets/app_Image.dart';
 import '../../../core/widgets/my_app_bar.dart';
-import '../../../core/widgets/app_card.dart';
-import '../../../features/home/product_model.dart';
+
+part '../../../features/home/models.dart';
+
+part '../../../core/widgets/app_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,34 +18,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<ProductModel> _products;
-  late List<SliderModel> _sliders;
-  DataStates _productsDataStates = DataStates.uninitialized;
-  DataStates _slidersDataStates = DataStates.uninitialized;
+  late List<_ProductModel> _products;
+  late List<_SliderModel> _sliders;
+  DataStates _productsStates = DataStates.uninitialized;
+  DataStates _slidersStates = DataStates.uninitialized;
 
   Future<void> _productsReq() async {
-    _productsDataStates = DataStates.loading;
+    _productsStates = DataStates.loading;
     setState(() {});
     final response = await DioHelper.getData("api/Products");
     if (response.isSuccess) {
-      _productsDataStates = DataStates.loaded;
-      _products = (response.data as List).map((e) => ProductModel.fromJson(e)).toList();
+      _productsStates = DataStates.loaded;
+      _products = (response.data as List).map((e) => _ProductModel.fromJson(e)).toList();
     } else {
-      _productsDataStates = DataStates.error;
+      _productsStates = DataStates.error;
       showMsg(response.msg);
       _products = [];
     }
     setState(() {});
   }
+
   Future<void> _slidersReq() async {
-    _slidersDataStates = DataStates.loading;
+    _slidersStates = DataStates.loading;
     setState(() {});
     final response = await DioHelper.getData("api/Sliders");
     if (response.isSuccess) {
-      _slidersDataStates = DataStates.loaded;
-      _products = (response.data as List).map((e) => ProductModel.fromJson(e)).toList();
+      _slidersStates = DataStates.loaded;
+      _sliders = (response.data as List).map((e) => _SliderModel.fromJson(e)).toList();
     } else {
-      _slidersDataStates = DataStates.error;
+      _slidersStates = DataStates.error;
       showMsg(response.msg);
       _products = [];
     }
@@ -69,11 +72,19 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              const _BuildSlider(),
+              _BuildSlider(slidersStates: _slidersStates, sliders: _slidersStates != DataStates.loaded ? [] : _sliders),
               const SizedBox(height: 30),
-              _BuildProductsGrid(title: "Top rated products", dataStates: _productsDataStates, products: _productsDataStates != DataStates.loaded ?[]:_products),
+              _BuildProductsGrid(
+                title: "Top rated products",
+                productsStates: _productsStates,
+                products: _productsStates != DataStates.loaded ? [] : _products,
+              ),
               const SizedBox(height: 30),
-              _BuildProductsGrid(title: "Most ordered Products", dataStates: _productsDataStates, products: _productsDataStates != DataStates.loaded ?[]:_products),
+              _BuildProductsGrid(
+                title: "Most ordered Products",
+                productsStates: _productsStates,
+                products: _productsStates != DataStates.loaded ? [] : _products,
+              ),
             ],
           ),
         ),
@@ -81,71 +92,117 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
 class _BuildSlider extends StatelessWidget {
-  const _BuildSlider({super.key});
+  const _BuildSlider({required this.slidersStates, required this.sliders});
+
+  final DataStates slidersStates;
+  final List<_SliderModel> sliders;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: AlignmentGeometry.center,
-      children: [
-        ///Todo change to network image
-        ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(15),
-          child: const AppImage(
+    return slidersStates != DataStates.loaded
+        ? SizedBox(
+            height: 200,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(color: Colors.white),
+            ),
+          )
+        : SizedBox(
             height: 300,
-            fit: BoxFit.cover,
-            image:
-            "https://imgix.bustle.com/uploads/image/2020/4/22/7b47eae2-3a26-41c7-9e0c-5141940ea9f4-91593786_547723625865282_5028999264309304315_n.jpg?w=1200&h=630&fit=crop&crop=faces&fm=jpg",
-          ),
-        ),
-        Container(
-          height: 170,
-          decoration: BoxDecoration(color: const Color(0xFFE9DCD3).withValues(alpha: 0.7)),
-          child: Padding(
-            padding: const EdgeInsetsGeometry.symmetric(horizontal: 25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: PageView.builder(
+              itemBuilder: (context, index) {
+                final slider = sliders[index];
+                return Stack(
+                  alignment: AlignmentGeometry.center,
                   children: [
-                    Text(
-                      "50% OFF DISCOUNT \nCUPON CODE : 125865",
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    SizedBox(
+                      height: 300,
+                      child: ClipRRect(
+                        borderRadius: BorderRadiusGeometry.circular(15),
+                        child: AppImage(
+                          fit: BoxFit.cover,
+                          image: slider.imageUrl,
+                          errorBuilder: (context, error, stackTrace) => const AppImage(
+                            fit: BoxFit.cover,
+                            image:
+                                "https://domf5oio6qrcr.cloudfront.net/medialibrary/9720/conversions/makeup_cosmetics-thumb.jpg",
+                          ),
+                        ),
+                      ),
                     ),
-                    const AppImage(image: "offer.svg"),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const AppImage(image: "offer.svg"),
-                    Text(
-                      "Hurry up! \nSkin care only !",
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                        fontVariations: <FontVariation>[const FontVariation('wght', 700)],
+                    Container(
+                      height: 170,
+                      decoration: BoxDecoration(color: const Color(0xFFE9DCD3).withValues(alpha: 0.7)),
+                      child: Padding(
+                        padding: const EdgeInsetsGeometry.symmetric(horizontal: 25),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${slider.discountPercent}% OFF DISCOUNT",
+                                      style: Theme.of(context).textTheme.headlineMedium,
+                                    ),
+                                    Text(
+                                      "CUPON CODE : ${slider.couponCode}",
+                                      style: Theme.of(context).textTheme.headlineMedium,
+                                    ),
+                                  ],
+                                ),
+                                const AppImage(image: "offer.svg"),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const AppImage(image: "offer.svg"),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      slider.descriptionTitle1,
+                                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                        fontVariations: <FontVariation>[const FontVariation('wght', 700)],
+                                      ),
+                                    ),
+                                    Text(
+                                      slider.descriptionTitle2,
+                                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                        fontVariations: <FontVariation>[const FontVariation('wght', 700)],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
-                ),
-              ],
+                );
+              },
             ),
-          ),
-        ),
-      ],
-    );
+          );
   }
 }
 
 class _BuildProductsGrid extends StatelessWidget {
-  const _BuildProductsGrid({required this.title, required this.dataStates, required this.products});
+  const _BuildProductsGrid({required this.title, required this.productsStates, required this.products});
 
   final String title;
 
-  final DataStates dataStates;
-  final List<ProductModel> products;
+  final DataStates productsStates;
+  final List<_ProductModel> products;
 
   @override
   Widget build(BuildContext context) {
@@ -164,9 +221,9 @@ class _BuildProductsGrid extends StatelessWidget {
           scrollDirection: Axis.vertical,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: dataStates != DataStates.loaded ? 4 : products.length,
+          itemCount: productsStates != DataStates.loaded ? 4 : products.length,
           itemBuilder: (context, index) =>
-              dataStates != DataStates.loaded ? const LoadingProductWidget() : AppCard(product: products[index]),
+              productsStates != DataStates.loaded ? const _LoadingProductWidget() : _AppCard(product: products[index]),
         ),
       ],
     );
