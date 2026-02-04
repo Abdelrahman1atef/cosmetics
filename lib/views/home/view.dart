@@ -4,7 +4,29 @@ import 'package:cosmetics/views/home/pages/home.dart';
 import 'package:cosmetics/views/home/pages/profile.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/logic/helper_method.dart';
+import '../../core/network/dio_helper.dart';
 import '../../core/widgets/app_image.dart';
+
+
+
+final ValueNotifier<DataStates> cartItemsStates = ValueNotifier<DataStates>(DataStates.uninitialized);
+final ValueNotifier<CartModel> cartNotifier = ValueNotifier<CartModel>(CartModel(items: [], totalCents: 0));
+Set<int> addedProducts = {};
+
+Future<void> getCartReq() async {
+  cartItemsStates.value = DataStates.loading;
+  final response = await DioHelper.getData("api/Cart");
+  if (response.isSuccess) {
+    cartItemsStates.value = DataStates.loaded;
+    cartNotifier.value = CartModel.fromJson(response.data);
+    addedProducts = cartNotifier.value.items.map((e) => e.productId).toSet();
+  } else {
+    cartItemsStates.value = DataStates.error;
+    showMsg(response.msg);
+  }
+}
+
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,11 +39,15 @@ class _HomeViewState extends State<HomeView> {
   final screens = [
     const HomePage(),
     const CategoriesPage(),
-    const CartPage(),
+     const CartPage(),
     const ProfilePage(),
   ];
   int currentScreen = 2;
-
+  @override
+  void initState() {
+    getCartReq();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

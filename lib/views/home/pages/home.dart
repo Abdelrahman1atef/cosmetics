@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cosmetics/core/network/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -5,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../core/logic/helper_method.dart';
 import '../../../core/widgets/app_Image.dart';
 import '../../../core/widgets/my_app_bar.dart';
+import '../view.dart';
 
 part '../../../features/home/models.dart';
 
@@ -103,7 +106,7 @@ class _BuildSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return slidersStates != DataStates.loaded
         ? SizedBox(
-            height: 200,
+            height: 300,
             child: Shimmer.fromColors(
               baseColor: Colors.grey.shade300,
               highlightColor: Colors.grey.shade100,
@@ -111,81 +114,78 @@ class _BuildSlider extends StatelessWidget {
             ),
           )
         : SizedBox(
-            height: 300,
+            height: 320,
             child: PageView.builder(
+              itemCount: sliders.length,
+              scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final slider = sliders[index];
                 return Stack(
                   alignment: AlignmentGeometry.center,
                   children: [
-                    SizedBox(
-                      height: 300,
-                      child: ClipRRect(
-                        borderRadius: BorderRadiusGeometry.circular(15),
-                        child: AppImage(
+                    ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(15),
+                      child: AppImage(
+                        fit: BoxFit.cover,
+                        image: slider.imageUrl,
+                        errorBuilder: (context, error, stackTrace) =>  AppImage(
                           fit: BoxFit.cover,
-                          image: slider.imageUrl,
-                          errorBuilder: (context, error, stackTrace) => const AppImage(
-                            fit: BoxFit.cover,
-                            image:
-                                "https://domf5oio6qrcr.cloudfront.net/medialibrary/9720/conversions/makeup_cosmetics-thumb.jpg",
-                          ),
+                          image:
+                          imageList[Random().nextInt(imageList.length)],
                         ),
                       ),
                     ),
                     Container(
-                      height: 170,
+                      margin: const EdgeInsetsDirectional.symmetric(vertical: 60),
+                      padding: const EdgeInsetsGeometry.symmetric(horizontal: 25),
                       decoration: BoxDecoration(color: const Color(0xFFE9DCD3).withValues(alpha: 0.7)),
-                      child: Padding(
-                        padding: const EdgeInsetsGeometry.symmetric(horizontal: 25),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${slider.discountPercent}% OFF DISCOUNT",
-                                      style: Theme.of(context).textTheme.headlineMedium,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${slider.discountPercent}% OFF DISCOUNT",
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  Text(
+                                    "CUPON CODE : ${slider.couponCode}",
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                ],
+                              ),
+                              const AppImage(image: "offer.svg"),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const AppImage(image: "offer.svg"),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    slider.descriptionTitle1,
+                                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                      fontVariations: <FontVariation>[const FontVariation('wght', 700)],
                                     ),
-                                    Text(
-                                      "CUPON CODE : ${slider.couponCode}",
-                                      style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  Text(
+                                    slider.descriptionTitle2,
+                                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                      fontVariations: <FontVariation>[const FontVariation('wght', 700)],
                                     ),
-                                  ],
-                                ),
-                                const AppImage(image: "offer.svg"),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const AppImage(image: "offer.svg"),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      slider.descriptionTitle1,
-                                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                        fontVariations: <FontVariation>[const FontVariation('wght', 700)],
-                                      ),
-                                    ),
-                                    Text(
-                                      slider.descriptionTitle2,
-                                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                        fontVariations: <FontVariation>[const FontVariation('wght', 700)],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],

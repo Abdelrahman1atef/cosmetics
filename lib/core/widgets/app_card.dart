@@ -76,7 +76,12 @@ class _AppCard extends StatefulWidget {
 
 class _AppCardState extends State<_AppCard> {
   DataStates _productsStates = DataStates.uninitialized;
-
+  bool isAdded = false;
+  @override
+  void initState() {
+    isAdded = addedProducts.contains(widget.product.id);
+    super.initState();
+  }
   Future<void> _addToCart() async {
     _productsStates = DataStates.loading;
     setState(() {});
@@ -84,14 +89,13 @@ class _AppCardState extends State<_AppCard> {
       endpoint: "api/Cart/add",
       queryParameters: {"productId": widget.product.id, "quantity": 1},
     );
-    if (response.isSuccess) {
-      _productsStates = DataStates.loaded;
-      showMsg(response.msg);
-    } else {
-      _productsStates = DataStates.error;
-      showMsg(response.msg);
-    }
-    setState(() {});
+    setState(() {
+      _productsStates =
+      response.isSuccess ? DataStates.loaded : DataStates.error;
+    });
+
+    showMsg(response.msg);
+    getCartReq();
   }
 
   @override
@@ -126,9 +130,11 @@ class _AppCardState extends State<_AppCard> {
                         fit: BoxFit.cover,
                         height: 200,
                         width: 200,
-                        errorBuilder: (context, error, stackTrace) => const AppImage(
-                          image:
-                              "https://www.loyecosmetics.com/cdn/shop/files/preview_images/70a95804d95749d98ea06715e71ee555.thumbnail.0000000000.jpg?v=1769416939&width=1080",
+                        errorBuilder: (context, error, stackTrace) => AppImage(
+                          fit: BoxFit.cover,
+                          height: 200,
+                          width: 200,
+                          image:imageList[Random().nextInt(imageList.length)],
                         ),
                       ),
                     ),
@@ -137,22 +143,41 @@ class _AppCardState extends State<_AppCard> {
                     top: 0,
                     right: 0,
                     child: InkWell(
-                      onTap: _productsStates == DataStates.loaded ? null : _addToCart,
+                      onTap: isAdded||_productsStates == DataStates.loading ? null : _addToCart,
                       child: Container(
                         padding: const EdgeInsetsGeometry.all(8),
                         margin: const EdgeInsetsGeometry.all(8),
                         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadiusGeometry.circular(8)),
                         child: Builder(
                           builder: (context) {
+                            if (isAdded) {
+                              return const AppImage(
+                              image: "check_out.svg",
+                              width: 24,
+                              height: 24,
+                            );
+                            }
                             switch (_productsStates) {
-                              case DataStates.uninitialized:
-                                return const AppImage(image: "add_to_cart.svg", width: 24, height: 24);
                               case DataStates.loading:
-                                return const CircularProgressIndicator();
+                                return const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                );
+
                               case DataStates.loaded:
-                                return const AppImage(image: "done_task.svg", width: 30, height: 30);
+                                return const AppImage(
+                                  image: "check_out.svg",
+                                  width: 24,
+                                  height: 24,
+                                );
+
                               default:
-                                return const AppImage(image: "add_to_cart.svg", width: 24, height: 24);
+                                return const AppImage(
+                                  image: "add_to_cart.svg",
+                                  width: 24,
+                                  height: 24,
+                                );
                             }
                           },
                         ),
@@ -181,3 +206,11 @@ class _AppCardState extends State<_AppCard> {
   }
 }
 
+final imageList = [
+  "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=1000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?q=80&w=1000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?q=80&w=1000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=1000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1000&auto=format&fit=crop",
+];
