@@ -5,6 +5,7 @@ import 'package:cosmetics/views/login.dart';
 import 'package:flutter/material.dart';
 
 import '../core/logic/cash_helper.dart';
+import '../core/logic/helper_method.dart';
 import '../core/widgets/app_image.dart';
 
 final pages = [
@@ -81,7 +82,7 @@ class _SplashScreenState extends State<OnBoardingView> {
                     onPressed: () async {
                       await CashHelper.setFirstTime();
                       if (context.mounted) {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView()));
+                        goto( const LoginView());
                       }
                     },
                     child: currentPage == 2
@@ -126,7 +127,7 @@ class _SplashScreenState extends State<OnBoardingView> {
                     }
                     CashHelper.setFirstTime();
                     if (context.mounted) {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView()));
+                      goto( const LoginView());
                     }
                   },
                   fit: currentPage != 2 ? FlexFit.loose : FlexFit.tight,
