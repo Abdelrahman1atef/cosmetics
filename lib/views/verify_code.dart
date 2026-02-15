@@ -22,6 +22,7 @@ class VerifyCodeView extends StatefulWidget {
 
 class _VerifyCodeViewState extends State<VerifyCodeView> {
   final _controller = TextEditingController();
+  DataStates _state = DataStates.uninitialized;
 
   @override
   void dispose() {
@@ -37,34 +38,30 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
   }
 
   void _req(BuildContext context, Map<String, dynamic> data) async {
+    _state = DataStates.loading;
+    setState(() {});
     final response = await DioHelper.postData(endpoint: "api/Auth/verify-otp", data: data);
-
-    if (!context.mounted) return;
-
-    showDialog<void>(
-      context: context,
-      builder: (context) => const Center(child: CircularProgressIndicator()),
-    );
-    if (!response.isSuccess) {
-      Navigator.pop(context);
+    if (response.isSuccess) {
+      _state = DataStates.loaded;
+      widget.isRegister
+          ? showDialog<void>(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => PopScope(canPop: false, child: SuccessDialog(isRegister: widget.isRegister)),
+            )
+          : goto(CreatePasswordView(countryCode: widget.countryCode, phoneNumber: widget.phoneNumber));
+    } else {
+      _state = DataStates.error;
       final msg = response.data['message'];
       showMsg(msg);
       return;
     }
-    Navigator.pop(context);
-    widget.isRegister
-        ? showDialog<void>(
-            barrierDismissible: false,
-            context: context,
-            builder: (context) => PopScope(
-                canPop: false,
-                child: SuccessDialog(isRegister: widget.isRegister)),
-          )
-        : goto(CreatePasswordView(countryCode: widget.countryCode, phoneNumber: widget.phoneNumber));
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
@@ -167,17 +164,24 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
               ),
               const SizedBox(height: 50),
               AppButton(
-                onPressed: () async {
-                  final data = {
-                    "countryCode": widget.countryCode,
-                    "phoneNumber": widget.phoneNumber,
-                    "otpCode": _controller.text,
-                  };
-                  if (context.mounted) {
-                    _req(context, data);
-                  }
-                },
-                text: "Done",
+                onPressed: _state == DataStates.loading
+                    ? null
+                    : () async {
+                        final data = {
+                          "countryCode": widget.countryCode,
+                          "phoneNumber": widget.phoneNumber,
+                          "otpCode": _controller.text,
+                        };
+                        if (context.mounted) {
+                          _req(context, data);
+                        }
+                      },
+                widget: _state == DataStates.loading
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                        constraints: BoxConstraints(minHeight: 25, minWidth: 25),
+                      )
+                    : Text("Done", style: textTheme.bodyMedium),
               ),
             ],
           ),

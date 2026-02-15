@@ -1,3 +1,4 @@
+import 'package:cosmetics/views/login.dart';
 import 'package:cosmetics/views/success_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,8 @@ import '../core/widgets/app_input.dart';
 
 class CreatePasswordView extends StatefulWidget {
   const CreatePasswordView({super.key, required this.countryCode, required this.phoneNumber});
-  final  String countryCode;
+
+  final String countryCode;
   final String phoneNumber;
 
   @override
@@ -20,33 +22,33 @@ class _CreatePasswordViewState extends State<CreatePasswordView> {
   final _key = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  DataStates _state = DataStates.uninitialized;
 
-
-  void _req(BuildContext context, Map<String,dynamic> data) async{
-
+  void _req(BuildContext context, Map<String, dynamic> data) async {
+    _state = DataStates.loading;
+    setState(() {});
     final response = await DioHelper.postData(endpoint: "api/Auth/reset-password", data: data);
-    if (!context.mounted) return;
-    showDialog<void>(
-      context: context,
-      builder: (context) => const Center(child: CircularProgressIndicator()),
-    );
+
     if (response.isSuccess) {
-      Navigator.pop(context);
+      if (!context.mounted) return;
+      showDialog<void>(
+        context: context,
+        builder: (context) {
+          return const SuccessDialog(isRegister: false);
+        },
+      );
+      goto(const LoginView(), canPop: false);
+    } else {
+      _state = DataStates.error;
       final msg = response.data['message'];
       showMsg(msg);
-      return;
     }
-    Navigator.pop(context);
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        return const SuccessDialog(isRegister: false,);
-      },
-    );
-    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
@@ -105,20 +107,27 @@ class _CreatePasswordViewState extends State<CreatePasswordView> {
             ),
             const SizedBox(height: 60),
             AppButton(
-              onPressed: () async{
-                if (_key.currentState!.validate()) {
-                  final data = {
-                    "countryCode": widget.countryCode,
-                    "phoneNumber": widget.phoneNumber,
-                    "newPassword": _passwordController.text,
-                    "confirmPassword": _confirmPasswordController.text,
-                  };
-                  if (context.mounted) {
-                    _req(context, data);
-                  }
-                }
-              },
-              text: "Next",
+              onPressed: _state == DataStates.loading
+                  ? null
+                  : () async {
+                      if (_key.currentState!.validate()) {
+                        final data = {
+                          "countryCode": widget.countryCode,
+                          "phoneNumber": widget.phoneNumber,
+                          "newPassword": _passwordController.text,
+                          "confirmPassword": _confirmPasswordController.text,
+                        };
+                        if (context.mounted) {
+                          _req(context, data);
+                        }
+                      }
+                    },
+              widget: _state == DataStates.loading
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                      constraints: BoxConstraints(minHeight: 25, minWidth: 25),
+                    )
+                  : Text("Done", style: textTheme.bodyMedium),
             ),
           ],
         ),
