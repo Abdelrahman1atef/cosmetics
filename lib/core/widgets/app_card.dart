@@ -126,7 +126,8 @@ class _AppCardState extends State<_AppCard> {
                     borderRadius: BorderRadius.circular(8),
                     child: Center(
                       child: AppImage(
-                        image: widget.product.imageUrl,
+                        image: imageList[Random().nextInt(imageList.length)],
+                        // image: widget.product.imageUrl,
                         fit: BoxFit.cover,
                         height: 200,
                         width: 200,

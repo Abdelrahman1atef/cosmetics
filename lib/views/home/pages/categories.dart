@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cosmetics/core/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -5,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../core/logic/helper_method.dart';
 import '../../../core/network/dio_helper.dart';
 import '../../../core/widgets/my_app_bar.dart';
+import 'cart/view.dart';
 
 class _CategoriesModel {
   late final int id;
@@ -83,8 +86,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: AppImage(
-                          image: category.imageUrl,
+                          image: imageList[Random().nextInt(imageList.length)],
+                          // image: category.imageUrl,
                           fit: BoxFit.cover,
+                          height: 80,
                           width: 80,
                           errorBuilder: (context, error, stackTrace) => const AppImage(image: "cat_bundles.png"),
                         ),

@@ -5,7 +5,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../views/login.dart';
 
-String baseUrl = "http://cosmatics.growfet.com/";
+String baseUrl = "https://cosmatics.growfet.com/";
 Duration apiTimeOut = const Duration(seconds: 50);
 
 enum DataStates { uninitialized, loading, loaded, error }

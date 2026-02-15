@@ -130,7 +130,7 @@ class _CartPageState extends State<CartPage> {
                                 ),
                               ),
                               _BuildProductList(cartItems: cartItems),
-                              _BuildCheckOut(cartItems: cartItems),
+                              SliverToBoxAdapter(child: BuildCheckOut(cartItems: cartItems)),
                             ],
                           ],
                         ),
@@ -203,7 +203,8 @@ class _BuildProductListState extends State<_BuildProductList> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: AppImage(
-                          image: cartItem.imageUrl,
+                          image: imageList[Random().nextInt(imageList.length)],
+                          // image: cartItem.imageUrl,
                           fit: BoxFit.cover,
                           width: 120,
                           height: 120,
@@ -288,115 +289,113 @@ class _BuildProductListState extends State<_BuildProductList> {
   }
 }
 
-class _BuildCheckOut extends StatelessWidget {
-  const _BuildCheckOut({required this.cartItems});
+class BuildCheckOut extends StatelessWidget {
+  const BuildCheckOut({super.key, required this.cartItems});
 
   final CartModel cartItems;
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        padding: const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 30),
-        decoration: BoxDecoration(color: const Color(0xFFBBD8D9), borderRadius: BorderRadiusGeometry.circular(13)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              "- REVIEW PAYMENT",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: const Color(0xFF4E5977)),
+    return Container(
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 30),
+      decoration: BoxDecoration(color: const Color(0xFFBBD8D9), borderRadius: BorderRadiusGeometry.circular(13)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            "- REVIEW PAYMENT",
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: const Color(0xFF4E5977)),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            "PAYMENT SUMMARY",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontSize: 25,
+              fontVariations: <FontVariation>[const FontVariation('wght', 500)],
+              color: const Color(0xFF4E5977),
             ),
-            const SizedBox(height: 20),
-            Text(
-              "PAYMENT SUMMARY",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontSize: 25,
-                fontVariations: <FontVariation>[const FontVariation('wght', 500)],
-                color: const Color(0xFF4E5977),
+          ),
+          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Subtotal",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: const Color(0xFF4E5977),
+                  fontVariations: <FontVariation>[const FontVariation('wght', 500)],
+                ),
               ),
-            ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Subtotal",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF4E5977),
-                    fontVariations: <FontVariation>[const FontVariation('wght', 500)],
-                  ),
+              Text(
+                "${cartItems.total} EGP",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: const Color(0xFF4E5977),
+                  fontVariations: <FontVariation>[const FontVariation('wght', 600)],
                 ),
-                Text(
-                  "${cartItems.total} EGP",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF4E5977),
-                    fontVariations: <FontVariation>[const FontVariation('wght', 600)],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "SHIPPING FEES",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF4E5977),
-      
-                    fontVariations: <FontVariation>[const FontVariation('wght', 500)],
-                  ),
-                ),
-                Text(
-                  "TO BE CALCULATED",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF4E5977),
-                    fontVariations: <FontVariation>[const FontVariation('wght', 600)],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Divider(color: Color(0xFF99CACB)),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "TOTAL + VAT",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF4E5977),
-      
-                    fontVariations: <FontVariation>[const FontVariation('wght', 500)],
-                  ),
-                ),
-                Text(
-                  "${cartItems.total} EGP",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF4E5977),
-                    fontVariations: <FontVariation>[const FontVariation('wght', 600)],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-      
-            AppButton(
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (context) => const CheckOutView())),
-              borderRadius: 13,
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 0),
-              color: const Color(0xFFDA498C),
-              widget: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const AppImage(image: "order.svg"),
-                  Text("PROCEEED CHECKOUT", style: TextTheme.of(context).bodyMedium),
-                ],
               ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "SHIPPING FEES",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: const Color(0xFF4E5977),
+    
+                  fontVariations: <FontVariation>[const FontVariation('wght', 500)],
+                ),
+              ),
+              Text(
+                "TO BE CALCULATED",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: const Color(0xFF4E5977),
+                  fontVariations: <FontVariation>[const FontVariation('wght', 600)],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          const Divider(color: Color(0xFF99CACB)),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "TOTAL + VAT",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: const Color(0xFF4E5977),
+    
+                  fontVariations: <FontVariation>[const FontVariation('wght', 500)],
+                ),
+              ),
+              Text(
+                "${cartItems.total} EGP",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: const Color(0xFF4E5977),
+                  fontVariations: <FontVariation>[const FontVariation('wght', 600)],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+    
+          AppButton(
+            onPressed: () =>
+                goto( CheckOutView(cartItems:cartItems)),
+            borderRadius: 13,
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 0),
+            color: const Color(0xFFDA498C),
+            widget: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const AppImage(image: "order.svg"),
+                Text("PROCEEED CHECKOUT", style: TextTheme.of(context).bodyMedium),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

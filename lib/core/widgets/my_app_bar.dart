@@ -2,6 +2,8 @@ import 'package:cosmetics/core/widgets/app_image.dart';
 import 'package:cosmetics/views/check_out.dart';
 import 'package:flutter/material.dart';
 
+import '../logic/helper_method.dart';
+
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
     super.key,
@@ -9,16 +11,16 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.haveSearchBar,
     this.title,
     this.haveAction,
+    this.canPop = false,
   });
 
   final bool haveTitle, haveSearchBar;
   final bool? haveAction;
+  final bool canPop;
   final String? title;
 
   @override
-  Size get preferredSize => Size.fromHeight(
-    kToolbarHeight + (haveSearchBar && haveTitle ? kToolbarHeight : 25),
-  );
+  Size get preferredSize => Size.fromHeight(kToolbarHeight + (haveSearchBar && haveTitle ? kToolbarHeight : 25));
 
   @override
   Widget build(BuildContext context) {
@@ -28,36 +30,27 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       automaticallyImplyLeading: false,
       leadingWidth: 50,
-      leading: Navigator.canPop(context)
-          ? Padding(
-            padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
-            child: CircleAvatar(
-            maxRadius: 20,
-            backgroundColor: Theme.of(context).hintColor.withValues(
-              alpha: 0.3
-            ),
-            child: const AppImage(image: "arrow_back.svg")),
-          )
+      leading: canPop
+          ? GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Padding(
+                padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
+                child: CircleAvatar(
+                  maxRadius: 20,
+                  backgroundColor: Theme.of(context).hintColor.withValues(alpha: 0.3),
+                  child: const AppImage(image: "arrow_back.svg"),
+                ),
+              ),
+            )
           : null,
       centerTitle: true,
       title: haveTitle
-          ? Text(
-              title ?? "",
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontSize: 30),
-            )
+          ? Text(title ?? "", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 30))
           : null,
       actionsPadding: const EdgeInsetsDirectional.symmetric(horizontal: 24),
       actions: haveAction ?? false
           ? [
-              InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(builder: (context) => const CheckOutView()),
-                ),
-                child: const AppImage(image: "check_out.svg", width: 30),
-              ),
+              const AppImage(image: "check_out.svg", width: 30),
             ]
           : null,
       bottom: haveSearchBar
@@ -69,13 +62,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   data: Theme.of(context).searchBarTheme,
                   child: SearchBar(
                     hintText: "Search",
-                    hintStyle: WidgetStatePropertyAll(
-                      Theme.of(context).textTheme.titleSmall,
-                    ),
+                    hintStyle: WidgetStatePropertyAll(Theme.of(context).textTheme.titleSmall),
                     trailing: const [AppImage(image: "search.svg")],
-                    textStyle: WidgetStatePropertyAll(
-                      Theme.of(context).textTheme.displayMedium,
-                    ),
+                    textStyle: WidgetStatePropertyAll(Theme.of(context).textTheme.displayMedium),
                   ),
                 ),
               ),

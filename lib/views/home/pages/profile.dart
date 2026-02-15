@@ -1,3 +1,4 @@
+import 'package:cosmetics/core/widgets/my_app_bar.dart';
 import 'package:cosmetics/views/register.dart';
 import 'package:flutter/material.dart';
 

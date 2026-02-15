@@ -9,6 +9,7 @@ import '../core/widgets/app_image.dart';
 import '../core/widgets/app_button.dart';
 import '../core/widgets/app_drop_menu.dart';
 import '../core/widgets/app_input.dart';
+import '../core/widgets/my_app_bar.dart';
 import '../features/auth/register_model.dart';
 
 class RegisterView extends StatefulWidget {
@@ -89,11 +90,12 @@ class _RegisterViewState extends State<RegisterView> {
     final btnText = widget.isProfileUpdate ? "Done" : "Next";
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      bottomNavigationBar: Padding(
+      bottomNavigationBar: widget.isProfileUpdate
+          ? null
+          : Padding(
         padding: const EdgeInsetsGeometry.symmetric(vertical: 20),
         child: GestureDetector(
-          onTap: () =>
-              Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const LoginView())),
+          onTap: () => goto( const LoginView()),
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
@@ -111,7 +113,7 @@ class _RegisterViewState extends State<RegisterView> {
           ),
         ),
       ),
-
+      appBar: const MyAppBar(haveTitle: false, haveSearchBar: false, canPop: true),
       body: SingleChildScrollView(
         padding: const EdgeInsetsGeometry.directional(
           top: kToolbarHeight + 50,

@@ -127,12 +127,17 @@ class _BuildSlider extends StatelessWidget {
                       borderRadius: BorderRadiusGeometry.circular(15),
                       child: AppImage(
                         fit: BoxFit.cover,
-                        image: slider.imageUrl,
-                        errorBuilder: (context, error, stackTrace) =>  AppImage(
+                        height: 320,
+                        width: double.infinity,
+                        image:imageList[Random().nextInt(imageList.length)],
+                        // image: slider.imageUrl,
+                        errorBuilder: (context, error, stackTrace) {
+                          return AppImage(
                           fit: BoxFit.cover,
                           image:
                           imageList[Random().nextInt(imageList.length)],
-                        ),
+                        );
+                        },
                       ),
                     ),
                     Container(
