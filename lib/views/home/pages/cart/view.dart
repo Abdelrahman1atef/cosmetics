@@ -20,8 +20,8 @@ class CartModel {
   CartModel({required this.items, required this.totalCents});
 
   CartModel.fromJson(Map<String, dynamic> json) {
-    items = List<Map<String, dynamic>>.from(json['items']).map((e) => Items.fromJson(e)).toList();
-    totalCents = (json['total']* 100).round();
+    items = List<Map<String, dynamic>>.from(json['items'] ?? []).map((e) => Items.fromJson(e)).toList();
+    totalCents = ((json['total'] ?? 0) * 100).round();
   }
   double get total => totalCents / 100;
   CartModel copyWith({
@@ -43,11 +43,11 @@ class Items {
   late final String imageUrl;
   double get price => priceCents / 100;
   Items.fromJson(Map<String, dynamic> json) {
-    productId = json['productId'];
-    productName = json['productName'];
-    quantity = json['quantity'];
-    priceCents  = (json['price']* 100).round();
-    imageUrl = json['imageUrl'];
+    productId = json['product_id'] ?? json['productId'] ?? 0;
+    productName = json['product_name_en'] ?? json['product_name_ar'] ?? json['productName'] ?? "";
+    quantity = json['quantity'] ?? 0;
+    priceCents  = ((json['price'] ?? 0) * 100).round();
+    imageUrl = json['image_url'] ?? json['imageUrl'] ?? "";
   }
 }
 
@@ -117,7 +117,7 @@ class _CartPageState extends State<CartPage> {
             ? ValueListenableBuilder<CartModel>(
                 valueListenable: cartNotifier,
                 builder: (context, cartItems, child) => Padding(
-                  padding: const EdgeInsetsGeometry.symmetric(horizontal: 20),
+                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 20).copyWith(bottom: kBottomNavigationBarHeight*2),
                   child: cartItems.items.isEmpty
                       ? const Center(child: AppImage(image: "empty_cart.svg", height: 200))
                       : CustomScrollView(

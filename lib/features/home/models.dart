@@ -10,13 +10,13 @@ class _ProductModel {
   late final int categoryId;
 
   _ProductModel.fromJson(Map<String, dynamic> json)
-    : id = json['id'],
-      name = json['name'],
-      description = json['description'],
-      imageUrl = json['imageUrl'],
-      price = json['price'],
-      stock = json['stock'],
-      categoryId = json['categoryId']??0;
+    : id = json['id'] ?? 0,
+      name = json['name_en'] ?? json['name_ar'] ?? json['name'] ?? "",
+      description = json['description_en'] ?? json['description_ar'] ?? json['description'] ?? "",
+      imageUrl = json['image_url'] ?? json['imageUrl'] ?? "",
+      price = (json['price'] ?? 0).toDouble(),
+      stock = json['stock'] ?? 0,
+      categoryId = json['category_id'] ?? json['categoryId'] ?? 0;
 }
 
 class _SliderModel {
@@ -28,12 +28,11 @@ class _SliderModel {
   late final String imageUrl;
 
   _SliderModel.fromJson(Map<String, dynamic> json){
-    id = json['id'];
-    couponCode = json['couponCode'];
-    discountPercent = json['discountPercent'];
-    descriptionTitle1 = json['descriptionTitle1'];
-    descriptionTitle2 = json['descriptionTitle2'];
-    imageUrl = json['imageUrl'];
+    id = json['id'] ?? 0;
+    couponCode = json['coupon_code'] ?? json['couponCode'] ?? "";
+    discountPercent = json['discount_percent'] ?? json['discountPercent'] ?? 0;
+    descriptionTitle1 = json['description_title1_en'] ?? json['description_title1_ar'] ?? json['descriptionTitle1'] ?? "";
+    descriptionTitle2 = json['description_title2_en'] ?? json['description_title2_ar'] ?? json['descriptionTitle2'] ?? "";
+    imageUrl = json['image_url'] ?? json['imageUrl'] ?? "";
   }
-
 }

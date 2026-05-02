@@ -15,9 +15,9 @@ class _CategoriesModel {
   late final String imageUrl;
 
   _CategoriesModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    imageUrl = json['imageUrl'];
+    id = json['id'] ?? 0;
+    title = json['title_en'] ?? json['title_ar'] ?? json['title'] ?? "";
+    imageUrl = json['image_url'] ?? json['imageUrl'] ?? "";
   }
 }
 

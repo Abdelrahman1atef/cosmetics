@@ -9,11 +9,10 @@ class CountryCodeModel {
 
   CountryCodeModel({this.id = 0, this.code = "", this.name = ""});
 
-
   CountryCodeModel.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
-    code = json["code"];
-    name = json["name"];
+    id = json["id"] ?? 0;
+    code = (json["code"] ?? "").toString();
+    name = json["name_en"] ?? json["name_ar"] ?? json["name"] ?? "";
   }
 }
 
